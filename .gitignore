@@ -1,0 +1,20 @@
+# Build files
+build
+dist
+
+MANIFEST
+
+*.egg-info
+
+docs/_build
+
+*.pyc
+__pycache__
+
+# Editor/hidden files
+.*
+*~
+*#
+
+# Windows temp files
+Thumbs.db
