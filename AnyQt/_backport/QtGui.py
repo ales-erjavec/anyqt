@@ -342,7 +342,6 @@ __all__ = [
     'QVector2D',
     'QVector3D',
     'QVector4D',
-    'QWIDGETSIZE_MAX',
     'QWhatsThis',
     'QWhatsThisClickedEvent',
     'QWheelEvent',
@@ -727,7 +726,6 @@ from PyQt5.QtWidgets import (
     QUndoStack,
     QUndoView,
     QVBoxLayout,
-    QWIDGETSIZE_MAX,
     QWhatsThis,
     QWidget,
     QWidgetAction,
@@ -767,6 +765,13 @@ from PyQt5.QtPrintSupport import (
     QPrinter,
     QPrinterInfo
 )
+
+try:
+    # missing in some older PyQt5 releases (which?)
+    from PyQt5.QtWidgets import QWIDGETSIZE_MAX
+    __all__.append("QWIDGETSIZE_MAX")
+except ImportError:
+    pass
 
 try:
     from PyQt5.QtMultimedia import QSound
