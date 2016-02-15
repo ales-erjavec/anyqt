@@ -4,6 +4,9 @@ from . import _api
 
 
 class ImportHookBackport(object):
+    """
+    A python import hook (PEP-302)
+    """
     def __init__(self, whichapi):
         self.whichapi = whichapi
 
@@ -33,13 +36,21 @@ class ImportHookBackport(object):
         if subpkg is not None:
             backportpkg += "." + subpkg
         module = __import__(backportpkg, fromlist=["_"])
-        print("loaded module {} as a substitute for {}"
+        print("Loaded module {} as a substitute for {}"
               .format(module.__name__, fullname))
         sys.modules[fullname] = module
         return module
 
 
 class ImportHookDeny(object):
+    """
+    A python import hook (PEP-302) preventing imports of a Qt api.
+
+    Parameters
+    ----------
+    whichapi : str
+        The Qt api whose import should be prevented.
+    """
     def __init__(self, whichapi):
         self.whichapi = whichapi
 
@@ -55,17 +66,51 @@ class ImportHookDeny(object):
             return None
 
     def load_module(self, fullname):
-        raise ImportError("NO {} FOR YOU!!".format(fullname.split(".")[0]))
+        raise ImportError(
+            "Import of {} is denied.".format(fullname)
+        )
 
 
-def install_import_hook(api):
+def install_backport_hook(api):
+    """
+    Install a backport import hook for Qt4 api
+
+    Parameters
+    ----------
+    api : str
+        The Qt4 api whose structure should be intercepted
+        ('pyqt4' or 'pyside').
+
+    Example
+    -------
+    >>> install_backport_hook("pyqt4")
+    >>> import PyQt4
+    Loaded module AnyQt._backport as a substitute for PyQt4
+
+    """
     if api == _api.USED_API:
         raise ValueError
 
     sys.meta_path.insert(0, ImportHookBackport(api))
 
 
-def install_deny_import(api):
+def install_deny_hook(api):
+    """
+    Install a deny import hook for Qt api.
+
+    Parameters
+    ----------
+    api : str
+        The Qt api whose import should be prevented
+
+    Example
+    -------
+    >>> install_deny_import("pyqt4")
+    >>> import PyQt4
+    Traceback (most recent call last):...
+    ImportError: Import of PyQt4 is denied.
+
+    """
     if api == _api.USED_API:
         raise ValueError
 
