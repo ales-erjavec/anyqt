@@ -978,3 +978,9 @@ QColor.light = _QColor_light
 QColor.dark = _QColor_dark
 QColor.getRgba = _QColor_getRgba
 
+from PyQt5.QtCore import PYQT_VERSION as _PYQT_VERSION
+
+if _PYQT_VERSION < 0x50502:  # ?
+    from AnyQt import _fixes
+    _fixes.fix_pyqt5_QGraphicsItem_itemChange()
+    del _fixes

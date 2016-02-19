@@ -210,6 +210,13 @@ __all__ = [
 
 if _api.USED_API == _api.QT_API_PYQT5:
     from PyQt5.QtWidgets import *
+    from PyQt5.QtCore import PYQT_VERSION as _PYQT_VERSION
+
+    if _PYQT_VERSION < 0x50502:  # ?
+        from . import _fixes
+        _fixes.fix_pyqt5_QGraphicsItem_itemChange()
+        del _fixes
+
 elif _api.USED_API == _api.QT_API_PYQT4:
     from PyQt4 import QtGui as _QtGui
     __missing__ = [
