@@ -856,7 +856,8 @@ QHeaderView.isMovable = lambda self: self.setSectionsMovable()
 QHeaderView.setMovable = lambda self, movable: self.setSectionsMovable(movable)
 
 QHeaderView.resizeMode = lambda self, logicalIndex: self.sectionResizeMode(logicalIndex)
-QHeaderView.setResizeMode = lambda self, *args: self.setSectionResizeMode(*args)
+QHeaderView.setResizeMode = lambda self, *args: \
+    self.setSectionResizeMode(*args)
 
 
 def _QApplication_setGraphicsSystem(system):
@@ -934,7 +935,7 @@ def _QPainter_drawPixmapFragments(self, a1, a2, *args, **kwargs):
         args = args[1:]
         fragments = [
             QPainter.PixmapFragment.create(
-                tr.topLeft(), sr,
+                tr.center(), sr,
                 tr.width() / sr.width(),
                 tr.height() / sr.height(),
             )
