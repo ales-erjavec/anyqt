@@ -25,12 +25,12 @@ def selectapi(api):
     imported.
     """
     global __SELECTED_API
-    if __SELECTED_API is None:
-        __SELECTED_API = api.lower()
-        from . import _api
-    else:
+    if __SELECTED_API is not None and __SELECTED_API.lower() != api.lower():
         raise RuntimeError("A Qt API {} was already selected"
                            .format(__SELECTED_API))
+    elif __SELECTED_API is None:
+        __SELECTED_API = api.lower()
+        from . import _api
 
 
 if sys.version_info < (3, 4):
@@ -43,10 +43,10 @@ if sys.version_info < (3, 4):
         else:
             return True
 else:
-    import importlib as _importlib
+    import importlib.util as _importlibutil
     def __islocatable(name):
         try:
-            return _importlib.util.find_spec(name) is not None
+            return _importlibutil.find_spec(name) is not None
         except (ValueError, ImportError):
             return False
 

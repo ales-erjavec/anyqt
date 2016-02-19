@@ -57,7 +57,8 @@ else:
         available = AnyQt.availableapi()
         __available = None
 
-        if AnyQt.__PREFERRED_API.lower() in [name.lower() for name in available]:
+        if AnyQt.__PREFERRED_API is not None and \
+                AnyQt.__PREFERRED_API.lower() in [name.lower() for name in available]:
             __available = AnyQt.__PREFERRED_API.lower()
         elif "PyQt5" in available:
             __available = QT_API_PYQT5
