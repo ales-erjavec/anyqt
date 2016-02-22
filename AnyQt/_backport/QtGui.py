@@ -793,6 +793,7 @@ except ImportError:
 
 try:
     from PyQt5.QtX11Extras import QX11Info
+    QX11Info.isCompositingManagerRunning = staticmethod(lambda: True)
     __all__.append('QX11Info')
 except ImportError:
     pass
