@@ -2,7 +2,7 @@ import sys
 
 __PREFERRED_API = None
 __SELECTED_API = None
-
+USED_API = None
 
 def setpreferredapi(api):
     """
@@ -24,13 +24,14 @@ def selectapi(api):
     This can only be called once and before any of the Qt* modules are
     imported.
     """
-    global __SELECTED_API
+    global __SELECTED_API, USED_API
     if __SELECTED_API is not None and __SELECTED_API.lower() != api.lower():
         raise RuntimeError("A Qt API {} was already selected"
                            .format(__SELECTED_API))
     elif __SELECTED_API is None:
         __SELECTED_API = api.lower()
         from . import _api
+        USED_API = _api.USED_API
 
 
 if sys.version_info < (3, 4):

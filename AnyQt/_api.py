@@ -36,6 +36,7 @@ def comittoapi(api):
         api = _intern(api)
         USED_API = api
         AnyQt.__SELECTED_API = api
+        AnyQt.USED_API = api
 
 if AnyQt.__SELECTED_API is not None:
     comittoapi(AnyQt.__SELECTED_API)
