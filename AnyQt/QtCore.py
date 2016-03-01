@@ -234,6 +234,7 @@ if _api.USED_API == _api.QT_API_PYQT5:
     Signal = _QtCore.pyqtSignal
     Slot = _QtCore.pyqtSlot
     Property = _QtCore.pyqtProperty
+    del _QtCore
 
 elif _api.USED_API == _api.QT_API_PYQT4:
     from PyQt4 import QtCore as _QtCore, QtGui as _QtGui

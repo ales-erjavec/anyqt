@@ -352,6 +352,7 @@ __all__ = [
     'QWizard',
     'QWizardPage',
     # 'QWorkspace',
+    "QWIDGETSIZE_MAX",
     'qAlpha',
     'qApp',
     'qBlue',
@@ -769,9 +770,8 @@ from PyQt5.QtPrintSupport import (
 try:
     # missing in some older PyQt5 releases (which?)
     from PyQt5.QtWidgets import QWIDGETSIZE_MAX
-    __all__.append("QWIDGETSIZE_MAX")
 except ImportError:
-    pass
+    QWIDGETSIZE_MAX = (1 << 24) - 1
 
 try:
     from PyQt5.QtMultimedia import QSound
@@ -802,6 +802,10 @@ from PyQt5.QtCore import (
     QStandardPaths as _QStandardPaths, QObject as _QObject
 )
 
+from ._utils import obsolete_rename as _obsolete_rename
+
+
+# recreate Qt4 QDesktopServices
 class QDesktopServices(QDesktopServices):
     StandardLocation = _QStandardPaths.StandardLocation
     DocumentsLocation = _QStandardPaths.DocumentsLocation
@@ -824,12 +828,12 @@ class QDesktopServices(QDesktopServices):
         return _QStandardPaths.displayName(location)
 
 
+# recreate PyQt4's QPyTextObject
 class QPyTextObject(_QObject, QTextObjectInterface):
     pass
 
-
 _QFileDialog = QFileDialog
-
+# Recreate PyQt4 QFileDialog get{Open,Save}FileName..
 class QFileDialog(_QFileDialog):
     @staticmethod
     def getOpenFileName(*args, **kwargs):
@@ -841,6 +845,15 @@ class QFileDialog(_QFileDialog):
         return _QFileDialog.getOpenFileName(*args, **kwargs)
 
     @staticmethod
+    def getOpenFileNames(*args, **kwargs):
+        fn, _ = _QFileDialog.getOpenFileNames(*args, **kwargs)
+        return fn
+
+    @staticmethod
+    def getOpenFileNamesAndFilter(*args, **kwargs):
+        return _QFileDialog.getOpenFileNames(*args, **kwargs)
+
+    @staticmethod
     def getSaveFileName(*args, **kwargs):
         fn, _ = _QFileDialog.getSaveFileName(*args, **kwargs)
         return fn
@@ -849,22 +862,26 @@ class QFileDialog(_QFileDialog):
     def getSaveFileNameAndFilter(*args, **kwargs):
         return _QFileDialog.getSaveFileName(*args, **kwargs)
 
+
 # Obsolete members of QHeaderView
 QHeaderView.isClickable = lambda self: self.sectionsClickable()
-QHeaderView.setClickable = lambda self, clickable: self.setSectionsClickable(clickable)
+QHeaderView.setClickable = lambda self, clickable: \
+    self.setSectionsClickable(clickable)
 
-QHeaderView.isMovable = lambda self: self.setSectionsMovable()
-QHeaderView.setMovable = lambda self, movable: self.setSectionsMovable(movable)
+QHeaderView.isMovable = lambda self: self.sectionsMovable()
+QHeaderView.setMovable = lambda self, movable: \
+    self.setSectionsMovable(movable)
 
-QHeaderView.resizeMode = lambda self, logicalIndex: self.sectionResizeMode(logicalIndex)
+QHeaderView.resizeMode = lambda self, logicalIndex: \
+    self.sectionResizeMode(logicalIndex)
 QHeaderView.setResizeMode = lambda self, *args: \
     self.setSectionResizeMode(*args)
 
 
 def _QApplication_setGraphicsSystem(system):
     warnings.warn("QApplication.setGraphicsSystem() is not available in Qt5",)
-
 QApplication.setGraphicsSystem = _QApplication_setGraphicsSystem
+
 
 def _QLayout_setMargins(self, margin):
     warnings.warn(
@@ -872,11 +889,10 @@ def _QLayout_setMargins(self, margin):
         "Use setContentsMargins instead.",
         DeprecationWarning, stacklevel=2)
     self.setContentsMargins(margin, margin, margin, margin)
-
 QLayout.setMargin = _QLayout_setMargins
 
-
 _QGraphicsItem_scale1 = QGraphicsItem.scale
+
 
 def _QGraphicssItem_scale(self, *args):
     if args:
@@ -889,6 +905,7 @@ def _QGraphicssItem_scale(self, *args):
         self.setTransform(QTransform.fromScale(*args), True)
     else:
         return _QGraphicsItem_scale1(self)
+QGraphicsItem.scale = _QGraphicssItem_scale
 
 
 def _QGraphicsItem_translate(self, dx, dy):
@@ -899,6 +916,7 @@ def _QGraphicsItem_translate(self, dx, dy):
         stacklevel=2
     )
     self.setTransform(QTransform().translate(dx, dy), True)
+QGraphicsItem.translate = _QGraphicsItem_translate
 
 
 def _QGraphicsItem_rotate(self, angle):
@@ -909,14 +927,10 @@ def _QGraphicsItem_rotate(self, angle):
         stacklevel=2
     )
     self.setRotation(self.rotation() + angle)
-
-
-QGraphicsItem.scale = _QGraphicssItem_scale
-QGraphicsItem.translate = _QGraphicsItem_translate
 QGraphicsItem.rotate = _QGraphicsItem_rotate
 
-
 _QPainter_drawPixmapFragments1 = QPainter.drawPixmapFragments
+
 
 def _QPainter_drawPixmapFragments(self, a1, a2, *args, **kwargs):
     if isinstance(a2, QPixmap):
@@ -944,40 +958,18 @@ def _QPainter_drawPixmapFragments(self, a1, a2, *args, **kwargs):
         ]
         _QPainter_drawPixmapFragments1(
             self, fragments, pixmap, *args, **kwargs)
-
 QPainter.drawPixmapFragments = _QPainter_drawPixmapFragments
+
 QPixmap.grabWidget = staticmethod(lambda w: w.grab())
 
+QColor.light = _obsolete_rename("QColor.light", QColor.lighter)
+QColor.dark = _obsolete_rename("QColor.dark", QColor.darker)
+QColor.getRgba = _obsolete_rename("QColor.getRgba", QColor.getRgb)
 
-def _QColor_light(self, factor=150):
-    warnings.warn(
-        "QColor.light is obsolete an removed in PyQt5. "
-        "Use QColor.lighter insted",
-        DeprecationWarning
-    )
-    return QColor.lighter(self, factor)
-
-
-def _QColor_dark(self, factor=200):
-    warnings.warn(
-        "QColor.dark is obsolete and removed in PyQt5. "
-        "use QColor.darker instead",
-        DeprecationWarning
-    )
-    return QColor.darker(self, factor)
-
-
-def _QColor_getRgba(self):
-    warnings.warn(
-        "QColor.getRgba is obsolete and removed in PyQt5. "
-        "use QColor.getRgb instead",
-        DeprecationWarning
-    )
-    return QColor.getRgb(self)
-
-QColor.light = _QColor_light
-QColor.dark = _QColor_dark
-QColor.getRgba = _QColor_getRgba
+QRegion.unite = _obsolete_rename("QRegion.unite", QRegion.united)
+QRegion.subtract = _obsolete_rename("QRegion.subtract", QRegion.subtracted)
+QRegion.intersect = _obsolete_rename("QRegion.intersect", QRegion.intersected)
+QRegion.eor = _obsolete_rename("QRegion.eor", QRegion.xored)
 
 from PyQt5.QtCore import PYQT_VERSION as _PYQT_VERSION
 
@@ -985,3 +977,4 @@ if _PYQT_VERSION < 0x50502:  # ?
     from AnyQt import _fixes
     _fixes.fix_pyqt5_QGraphicsItem_itemChange()
     del _fixes
+

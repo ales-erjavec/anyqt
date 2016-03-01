@@ -230,6 +230,8 @@ __missing__ = [
     "qSwap"
 ]
 
+from ._utils import obsolete_rename as _obsolete_rename
+
 
 def qInstallMsgHandler(func):
     wrapped = lambda msgtype, context, text: func(msgtype, text)
@@ -243,8 +245,8 @@ def qInstallMsgHandler(func):
 
 
 def _QMetaMethod_signature(self):
-    "Return the method signature as a str"
-    return bytes(self.methodSignature()).decode("utf-8")
+    # Return the method signature as bytes
+    return bytes(self.methodSignature())
 
 
 QMetaMethod.signature = _QMetaMethod_signature
@@ -272,36 +274,10 @@ def _QObject_emit(self, sig, *args):
     return method.invoke(self, Qt.DirectConnection,
                          *[Q_ARG(type(a), a) for a in args])
 
-
 QObject.emit = _QObject_emit
-
-def _QObject_trUtf8(self, text, *args):
-    if isinstance(text, str):
-        text = text.encode("utf-8")
-    return QObject.tr(self, text, *args)
-
-
-def _obsolete_rename(oldname, newfunc):
-    newname = newfunc.__name__
-    def __obsolete(*args, **kwargs):
-        warnings.warn(
-            "{oldname} is obsolete and is removed in PyQt5. "
-            "Use {newname} instead.".format(oldname=oldname, newname=newname),
-            stacklevel=2
-        )
-        return newfunc(*args, **kwargs)
-    __obsolete.__name__ = oldname
-    return __obsolete
-
 
 QRectF.intersect = _obsolete_rename("QRectF.intersect", QRectF.intersected)
 QRectF.unite = _obsolete_rename("QRectF.unite", QRectF.united)
 
 QRect.intersect = _obsolete_rename("QRect.intersect", QRect.intersected)
 QRect.unite = _obsolete_rename("QRect.unite", QRect.united)
-
-
-def _QUrl_queryItems(self):
-    return _QUrlQuery(self).queryItems()
-
-QUrl.queryItems = _QUrl_queryItems
