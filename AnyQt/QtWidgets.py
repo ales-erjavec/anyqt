@@ -240,6 +240,13 @@ elif _api.USED_API == _api.QT_API_PYQT4:
     QStyleOptionTabWidgetFrame = _QtGui.QStyleOptionTabWidgetFrameV2
     QStyleOptionTabBarBase = _QtGui.QStyleOptionTabBarBaseV2
     QStyleOptionTab = _QtGui.QStyleOptionTabV2
+
+    # PyQt5's version of QFileDialog's static methods
+    class QFileDialog(_QtGui.QFileDialog):
+        getOpenFileName = _QtGui.QFileDialog.getOpenFileNameAndFilter
+        getOpenFileNames = _QtGui.QFileDialog.getOpenFileNamesAndFilter
+        getSaveFileName = _QtGui.QFileDialog.getSaveFileNameAndFilter
+
     del _QtGui
 
 elif _api.USED_API == _api.QT_API_PYSIDE:
