@@ -229,7 +229,7 @@ elif _api.USED_API == _api.QT_API_PYQT4:
 
     globals().update(
         {name: getattr(_QtGui, name) for name in __all__
-         if name not in __missing__}
+         if name not in __missing__ and hasattr(_QtGui, name)}
     )
     # Alias the QStyleOption version classes
     QStyleOptionViewItem = _QtGui.QStyleOptionViewItemV4,
@@ -261,7 +261,7 @@ elif _api.USED_API == _api.QT_API_PYSIDE:
 
     globals().update(
         {name: getattr(_QtGui, name) for name in __all__
-         if name not in __missing__}
+         if name not in __missing__ and hasattr(_QtGui, name)}
     )
     # Alias the QStyleOption version classes
     QStyleOptionViewItem = _QtGui.QStyleOptionViewItemV4,
@@ -273,3 +273,9 @@ elif _api.USED_API == _api.QT_API_PYSIDE:
     QStyleOptionTabBarBase = _QtGui.QStyleOptionTabBarBaseV2
     QStyleOptionTab = _QtGui.QStyleOptionTabV3
     del _QtGui
+
+
+try:
+    QWIDGETSIZE_MAX  # Missing in older PyQt5, PyQt4
+except NameError:
+    QWIDGETSIZE_MAX = (1 << 24) - 1
