@@ -273,20 +273,3 @@ elif _api.USED_API == _api.QT_API_PYSIDE:
     QStyleOptionTabBarBase = _QtGui.QStyleOptionTabBarBaseV2
     QStyleOptionTab = _QtGui.QStyleOptionTabV3
     del _QtGui
-
-if _api.USED_API != _api.QT_API_PYQT5:
-    from .QtGui import QColor as _QColor
-    _QColorDialog = QColorDialog
-
-    class QColorDialog(_QColorDialog):
-        @staticmethod
-        def customColor(index):
-            return _QColor.fromRgb(_QColorDialog.customColor(index))
-
-        @staticmethod
-        def setCustomColor(index, color):
-            _QColorDialog.setCustomColor(index, color.rgba())
-
-        @staticmethod
-        def setStandardColor(index, color):
-            _QColorDialog.setStandardColor(index, color.rgba())
