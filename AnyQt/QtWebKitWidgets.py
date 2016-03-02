@@ -1,6 +1,7 @@
 from . import _api
 
-__all__ = [
+# Names imported from Qt4's QtWebKit module
+__Qt4_QtWebKit = [
     'QGraphicsWebView',
     'QWebFrame',
     'QWebHitTestResult',

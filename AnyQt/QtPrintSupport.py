@@ -1,5 +1,7 @@
 from . import _api
-__all__ = [
+
+# Names imported from Qt'4 QtGui module
+__Qt4_QtGui = [
     'QAbstractPrintDialog',
     'QPageSetupDialog',
     'QPrintDialog',

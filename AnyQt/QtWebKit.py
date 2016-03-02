@@ -1,5 +1,7 @@
 from . import _api
-__all__ = [
+
+# Names imported from Qt4's QtWebKit module
+__Qt4_QtWebKit = [
     'QWebDatabase',
     'QWebElement',
     'QWebElementCollection',
@@ -42,10 +44,10 @@ elif _api.USED_API == _api.QT_API_PYSIDE:
         QWebPluginFactory,
         QWebSecurityOrigin,
         QWebSettings,
-
     )
-    __missing__ = [
-        'qWebKitMajorVersion',
-        'qWebKitMinorVersion',
-        'qWebKitVersion',
-    ]
+    try:
+        # missing in current PySide 1.2.2
+        from PySide.QtWebKit import \
+            qWebKitMajorVersion, qWebKitMinorVersion, qWebKitVersion
+    except ImportError:
+        pass

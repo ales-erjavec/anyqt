@@ -1,12 +1,14 @@
 from . import _api
 
-__all__ = [
+# List names imported from Qt4's QtCore module
+__Qt4_QtCore = [
     'QAbstractAnimation',
     'QAbstractEventDispatcher',
+    'QAbstractFileEngine',
+    'QAbstractFileEngineHandler',
+    'QAbstractFileEngineIterator',
     'QAbstractItemModel',
     'QAbstractListModel',
-    'QAbstractNativeEventFilter',
-    'QAbstractProxyModel',
     'QAbstractState',
     'QAbstractTableModel',
     'QAbstractTransition',
@@ -17,10 +19,6 @@ __all__ = [
     'QByteArray',
     'QByteArrayMatcher',
     'QChildEvent',
-    'QCollator',
-    'QCollatorSortKey',
-    'QCommandLineOption',
-    'QCommandLineParser',
     'QCoreApplication',
     'QCryptographicHash',
     'QDataStream',
@@ -33,36 +31,22 @@ __all__ = [
     'QElapsedTimer',
     'QEvent',
     'QEventLoop',
-    'QEventLoopLocker',
     'QEventTransition',
+    'QFSFileEngine',
     'QFile',
-    'QFileDevice',
     'QFileInfo',
-    'QFileSelector',
     'QFileSystemWatcher',
     'QFinalState',
     'QGenericArgument',
     'QGenericReturnArgument',
     'QHistoryState',
     'QIODevice',
-    'QIdentityProxyModel',
-    'QItemSelection',
-    'QItemSelectionModel',
-    'QItemSelectionRange',
-    'QJsonDocument',
-    'QJsonParseError',
-    'QJsonValue',
     'QLibrary',
     'QLibraryInfo',
     'QLine',
     'QLineF',
     'QLocale',
-    'QLockFile',
     'QMargins',
-    'QMarginsF',
-    'QMessageAuthenticationCode',
-    'QMessageLogContext',
-    'QMessageLogger',
     'QMetaClassInfo',
     'QMetaEnum',
     'QMetaMethod',
@@ -70,8 +54,6 @@ __all__ = [
     'QMetaProperty',
     'QMetaType',
     'QMimeData',
-    'QMimeDatabase',
-    'QMimeType',
     'QModelIndex',
     'QMutex',
     'QMutexLocker',
@@ -86,41 +68,33 @@ __all__ = [
     'QProcess',
     'QProcessEnvironment',
     'QPropertyAnimation',
+    'QPyNullVariant',
     'QReadLocker',
     'QReadWriteLock',
     'QRect',
     'QRectF',
     'QRegExp',
-    'QRegularExpression',
-    'QRegularExpressionMatch',
-    'QRegularExpressionMatchIterator',
     'QResource',
     'QRunnable',
-    'QSaveFile',
     'QSemaphore',
     'QSequentialAnimationGroup',
     'QSettings',
     'QSharedMemory',
-    'QSignalBlocker',
     'QSignalMapper',
     'QSignalTransition',
     'QSize',
     'QSizeF',
     'QSocketNotifier',
-    'QSortFilterProxyModel',
-    'QStandardPaths',
     'QState',
     'QStateMachine',
-    'QStorageInfo',
-    'QStringListModel',
     'QSysInfo',
+    'QSystemLocale',
     'QSystemSemaphore',
     'QT_TRANSLATE_NOOP',
     'QT_TR_NOOP',
     'QT_TR_NOOP_UTF8',
     'QT_VERSION',
     'QT_VERSION_STR',
-    'QTemporaryDir',
     'QTemporaryFile',
     'QTextBoundaryFinder',
     'QTextCodec',
@@ -132,12 +106,10 @@ __all__ = [
     'QThreadPool',
     'QTime',
     'QTimeLine',
-    'QTimeZone',
     'QTimer',
     'QTimerEvent',
     'QTranslator',
     'QUrl',
-    'QUrlQuery',
     'QUuid',
     'QVariant',
     'QVariantAnimation',
@@ -160,10 +132,11 @@ __all__ = [
     'QtCriticalMsg',
     'QtDebugMsg',
     'QtFatalMsg',
-    'QtInfoMsg',
     'QtMsgType',
     'QtSystemMsg',
     'QtWarningMsg',
+    'SIGNAL',
+    'SLOT',
     'bin_',
     'bom',
     'center',
@@ -183,18 +156,15 @@ __all__ = [
     'oct_',
     'qAbs',
     'qAddPostRoutine',
-    'qAddPreRoutine',
     'qChecksum',
     'qCompress',
     'qCritical',
     'qDebug',
     'qErrnoWarning',
     'qFatal',
-    'qFloatDistance',
-    'qFormatLogMessage',
     'qFuzzyCompare',
     'qInf',
-    'qInstallMessageHandler',
+    'qInstallMsgHandler',
     'qIsFinite',
     'qIsInf',
     'qIsNaN',
@@ -206,10 +176,10 @@ __all__ = [
     'qRound64',
     'qSNaN',
     'qSetFieldWidth',
-    'qSetMessagePattern',
     'qSetPadChar',
     'qSetRealNumberPrecision',
     'qSharedBuild',
+    'qSwap',
     'qUncompress',
     'qUnregisterResourceData',
     'qVersion',
@@ -225,60 +195,70 @@ __all__ = [
     'ws'
 ]
 
-if _api.USED_API == _api.QT_API_PYQT5:
-    from PyQt5 import QtCore as _QtCore
-    globals().update(
-        {name: getattr(_QtCore, name) for name in __all__}
-    )
+# Extra PyQt4 defined names mapped from PyQt4 which are not present in
+# PySide
+__PyQt4_QtCore = [
+    'PYQT_CONFIGURATION',
+    'PYQT_VERSION',
+    'PYQT_VERSION_STR',
+    'pyqtBoundSignal',
+    'pyqtPickleProtocol',
+    'pyqtProperty',
+    'pyqtRemoveInputHook',
+    'pyqtRestoreInputHook',
+    'pyqtSetPickleProtocol',
+    'pyqtSignal',
+    'pyqtSignature',
+    'pyqtSlot',
+    'pyqtWrapperType',
+]
 
-    Signal = _QtCore.pyqtSignal
-    Slot = _QtCore.pyqtSlot
-    Property = _QtCore.pyqtProperty
-    del _QtCore
+# List names imported from Qt4's QtGui module
+__Qt4_QtGui = [
+    'QAbstractProxyModel',
+    'QIdentityProxyModel',
+    'QItemSelection',
+    'QItemSelectionModel',
+    'QItemSelectionRange',
+    'QSortFilterProxyModel',
+    'QStringListModel',
+]
+
+#: Names in Qt4's QtCore module not in Qt5
+__Qt4_QtCore_missing_in_Qt5 = [
+    'QAbstractFileEngine',
+    'QAbstractFileEngineHandler',
+    'QAbstractFileEngineIterator',
+    'QFSFileEngine',
+    'QPyNullVariant',
+    'QSystemLocale',
+    'SIGNAL',
+    'SLOT',
+    'qInstallMsgHandler',
+    'qSwap'
+]
+
+# extra names in PyQt4's QtCore not in Qt5
+__PyQt4_QtCore_missing_in_Qt5 = [
+    'pyqtSignature',
+]
+
+if _api.USED_API == _api.QT_API_PYQT5:
+    from PyQt5.QtCore import *
+    Signal = pyqtSignal
+    Slot = pyqtSlot
+    Property = pyqtProperty
 
 elif _api.USED_API == _api.QT_API_PYQT4:
     from PyQt4 import QtCore as _QtCore, QtGui as _QtGui
-    __missing__ = [
-        'QAbstractNativeEventFilter',
-        'QCollator',
-        'QCollatorSortKey',
-        'QCommandLineOption',
-        'QCommandLineParser',
-        'QEventLoopLocker',
-        'QFileDevice',
-        'QFileSelector',
-        'QJsonDocument',
-        'QJsonParseError',
-        'QJsonValue',
-        'QLockFile',
-        'QMarginsF',
-        'QMessageAuthenticationCode',
-        'QMessageLogContext',
-        'QMessageLogger',
-        'QMimeDatabase',
-        'QMimeType',
-        'QRegularExpression',
-        'QRegularExpressionMatch',
-        'QRegularExpressionMatchIterator',
-        'QSaveFile',
-        'QSignalBlocker',
-        'QStandardPaths',
-        'QStorageInfo',
-        'QTemporaryDir',
-        'QTimeZone',
-        'QUrlQuery',
-        'QtInfoMsg',
-        'qAddPreRoutine',
-        'qFloatDistance',
-        'qFormatLogMessage',
-        'qInstallMessageHandler',
-        'qSetMessagePattern'
-    ]
     globals().update(
-        {name: getattr(_QtCore, name) for name in __all__
-         if hasattr(_QtCore, name)}
+        {name: getattr(_QtCore, name)
+         for name in __Qt4_QtCore + __PyQt4_QtCore if hasattr(_QtCore, name)}
     )
-
+    globals().update(
+        {name: getattr(_QtGui, name)
+         for name in __Qt4_QtGui if hasattr(_QtCore, name)}
+    )
     Signal = _QtCore.pyqtSignal
     Slot = _QtCore.pyqtSlot
     Property = _QtCore.pyqtProperty
@@ -294,103 +274,27 @@ elif _api.USED_API == _api.QT_API_PYQT4:
 
 elif _api.USED_API == _api.QT_API_PYSIDE:
     from PySide import QtCore as _QtCore, QtGui as _QtGui
-    __missing__ = [
-        'QAbstractNativeEventFilter',
-        'QCollator',
-        'QCollatorSortKey',
-        'QCommandLineOption',
-        'QCommandLineParser',
-        'QEventLoopLocker',
-        'QFileDevice',
-        'QFileSelector',
-        'QJsonDocument',
-        'QJsonParseError',
-        'QJsonValue',
-        'QLibrary',
-        'QLockFile',
-        'QMarginsF',
-        'QMessageAuthenticationCode',
-        'QMessageLogContext',
-        'QMessageLogger',
-        'QMetaType',
-        'QMimeDatabase',
-        'QMimeType',
-        'QObjectCleanupHandler',
-        'QRegularExpression',
-        'QRegularExpressionMatch',
-        'QRegularExpressionMatchIterator',
-        'QSaveFile',
-        'QSharedMemory',
-        'QSignalBlocker',
-        'QStandardPaths',
-        'QStorageInfo',
-        'QTemporaryDir',
-        'QTimeZone',
-        'QUrlQuery',
-        'QVariant',
-        'Q_ARG',
-        'Q_CLASSINFO',
-        'Q_ENUMS',
-        'Q_FLAGS',
-        'Q_RETURN_ARG',
-        'QtInfoMsg',
-        'bin_',
-        'bom',
-        'center',
-        'dec',
-        'endl',
-        'fixed',
-        'flush',
-        'forcepoint',
-        'forcesign',
-        'hex_',
-        'left',
-        'lowercasebase',
-        'lowercasedigits',
-        'noforcepoint',
-        'noforcesign',
-        'noshowbase',
-        'oct_',
-        'qAddPreRoutine',
-        'qCompress',
-        'qErrnoWarning',
-        'qFloatDistance',
-        'qFormatLogMessage',
-        'qInf',
-        'qInstallMessageHandler',
-        'qQNaN',
-        'qRemovePostRoutine',
-        'qRound64',
-        'qSNaN',
-        'qSetFieldWidth',
-        'qSetMessagePattern',
-        'qSetPadChar',
-        'qSetRealNumberPrecision',
-        'qSharedBuild',
-        'qUncompress',
-        'reset',
-        'right',
-        'scientific',
-        'showbase',
-        'uppercasebase',
-        'uppercasedigits',
-        'ws'
-    ]
     globals().update(
-        {name: getattr(_QtCore, name) for name in __all__
-         if hasattr(_QtCore, name)}
+        {name: getattr(_QtCore, name)
+         for name in __Qt4_QtCore if hasattr(_QtCore, name)}
     )
-    __all__ = sorted(set(__all__) - set(__missing__))
+    Signal = _QtCore.Signal
+    Slot = _QtCore.Slot
+    Property = _QtCore.Property
+
     QAbstractProxyModel = _QtGui.QAbstractProxyModel
-    QIdentityProxyModel = _QtGui.QIdentityProxyModel
+    if hasattr(_QtGui, "QIdentityProxyModel"):
+        QIdentityProxyModel = _QtGui.QIdentityProxyModel
     QItemSelection = _QtGui.QItemSelection
     QItemSelectionModel = _QtGui.QItemSelectionModel
     QItemSelectionRange = _QtGui.QItemSelectionRange
     QSortFilterProxyModel = _QtGui.QSortFilterProxyModel
     QStringListModel = _QtGui.QStringListModel
 
-    _major, _minor, _micro = tuple(map(int, _QtCore.qVersion().split(".")))
+    _major, _minor, _micro = tuple(map(int, _QtCore.qVersion().split(".")[:3]))
     QT_VERSION = (_major << 16) + (_minor << 8) + _micro
     QT_VERSION_STR = "{}.{}.{}".format(_major, _minor, _micro)
 
     del _QtCore, _QtGui, _major, _minor, _micro
+    # Known to be in PyQt4 but missing in PySide:
+    #     Q_ARG, Q_CLASSINFO, Q_ENUMS, Q_FLAGS, Q_RETURN_ARG, ...

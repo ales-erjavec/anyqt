@@ -3,5 +3,15 @@ AnyQt
 
 Yet another PyQt4/PyQt5 compatibility layer.
 
-Prelimanary and in development - do not use!!
+Preliminary and in development - do not use!!
 
+Features:
+* At the top level AnyQt exports a Qt5 compatible module namespace along with
+  some minimal renames to better support portability between different
+  versions
+* Which Qt api/backend is chosen can be controlled by a QT_API env variable
+* The api can be chosen/forced programmatically (as long as no
+  PyQt4/PyQt5/PySide was already imported)
+* provides an optional compatibility import hook, that denys imports from
+  conflicting Qt api, or intercepts and fakes a Qt4 api imports, to use a Qt5
+  compatible API (some monkey patching is involved).
