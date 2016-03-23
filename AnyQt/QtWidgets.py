@@ -250,6 +250,15 @@ elif _api.USED_API == _api.QT_API_PYQT4:
         getOpenFileNames = _QtGui.QFileDialog.getOpenFileNamesAndFilter
         getSaveFileName = _QtGui.QFileDialog.getSaveFileNameAndFilter
 
+    # Some extra forward compatibility
+    QHeaderView.setSectionResizeMode = lambda self, *args: self.setResizeMode(*args)
+    QHeaderView.sectionResizeMode = lambda self: self.resizeMode()
+    QHeaderView.sectionsClickable = lambda self: self.isClickable()
+    QHeaderView.setSectionsClickable = \
+        lambda self, clickable: self.setClickable(clickable)
+    QHeaderView.isMovable = lambda self: self.sectionsMovable()
+    QHeaderView.setMovable = \
+        lambda self, movable: self.setSectionsMovable(movable)
     del _QtGui
 
 elif _api.USED_API == _api.QT_API_PYSIDE:
@@ -282,6 +291,15 @@ elif _api.USED_API == _api.QT_API_PYSIDE:
     QStyleOptionTab = _QtGui.QStyleOptionTabV3
     QStyleOptionTab_ = _QtGui.QStyleOptionTab
 
+    # Some extra forward compatibility
+    QHeaderView.setSectionResizeMode = lambda self, *args: self.setResizeMode(*args)
+    QHeaderView.sectionResizeMode = lambda self: self.resizeMode()
+    QHeaderView.sectionsClickable = lambda self: self.isClickable()
+    QHeaderView.setSectionsClickable = \
+        lambda self, clickable: self.setClickable(clickable)
+    QHeaderView.isMovable = lambda self: self.sectionsMovable()
+    QHeaderView.setMovable = \
+        lambda self, movable: self.setSectionsMovable(movable)
     del _QtGui
 
 
