@@ -5,7 +5,8 @@ from . import _api
 
 class ImportHookBackport(object):
     """
-    A python import hook (PEP-302)
+    A python import hook (PEP-302) substituting Qt4 module imports, replacing
+    them with a back compatible shim.
     """
     def __init__(self, whichapi):
         self.whichapi = whichapi

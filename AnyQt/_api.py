@@ -1,3 +1,7 @@
+"""
+NOTE: Importing this module will select and commit to a Qt API.
+"""
+
 import os
 import sys
 

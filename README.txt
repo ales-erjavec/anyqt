@@ -1,11 +1,10 @@
 AnyQt
 -----
 
-Yet another PyQt4/PyQt5 compatibility layer.
-
-Preliminary and in development - do not use!!
+PyQt4/PyQt5 compatibility layer.
 
 Features:
+
 * At the top level AnyQt exports a Qt5 compatible module namespace along with
   some minimal renames to better support portability between different
   versions

@@ -4,9 +4,12 @@ __PREFERRED_API = None
 __SELECTED_API = None
 USED_API = None
 
+
 def setpreferredapi(api):
     """
     Set the preferred Qt API.
+
+    Will raise a RuntimeError if a Qt API was already selected.
 
     Note that QT_API environment variable (if set) will take precedence.
     """
@@ -14,6 +17,9 @@ def setpreferredapi(api):
     if __SELECTED_API is not None:
         raise RuntimeError("A Qt api {} was already selected"
                            .format(__SELECTED_API))
+
+    if api.lower() not in {"pyqt4", "pyqt5", "pyside"}:
+        raise ValueError(api)
     __PREFERRED_API = api.lower()
 
 
@@ -21,10 +27,13 @@ def selectapi(api):
     """
     Select an Qt API to use.
 
-    This can only be called once and before any of the Qt* modules are
+    This can only be set once and before any of the Qt modules are explicitly
     imported.
     """
     global __SELECTED_API, USED_API
+    if api.lower() not in {"pyqt4", "pyqt5", "pyside"}:
+        raise ValueError(api)
+
     if __SELECTED_API is not None and __SELECTED_API.lower() != api.lower():
         raise RuntimeError("A Qt API {} was already selected"
                            .format(__SELECTED_API))
@@ -54,7 +63,7 @@ else:
 
 def availableapi():
     """
-    Return a list of available Qt interfaces
+    Return a list of available Qt interfaces.
     """
     search = ["PyQt5", "PyQt4", "PySide"]
     return [name for name in search if __islocatable(name)]
