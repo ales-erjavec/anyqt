@@ -256,9 +256,9 @@ elif _api.USED_API == _api.QT_API_PYQT4:
     QHeaderView.sectionsClickable = lambda self: self.isClickable()
     QHeaderView.setSectionsClickable = \
         lambda self, clickable: self.setClickable(clickable)
-    QHeaderView.isMovable = lambda self: self.sectionsMovable()
-    QHeaderView.setMovable = \
-        lambda self, movable: self.setSectionsMovable(movable)
+    QHeaderView.sectionsMovable = lambda self: self.isMovable()
+    QHeaderView.setSectionsMovable = \
+        lambda self, movable: self.setMovable(movable)
     del _QtGui
 
 elif _api.USED_API == _api.QT_API_PYSIDE:
@@ -297,9 +297,9 @@ elif _api.USED_API == _api.QT_API_PYSIDE:
     QHeaderView.sectionsClickable = lambda self: self.isClickable()
     QHeaderView.setSectionsClickable = \
         lambda self, clickable: self.setClickable(clickable)
-    QHeaderView.isMovable = lambda self: self.sectionsMovable()
-    QHeaderView.setMovable = \
-        lambda self, movable: self.setSectionsMovable(movable)
+    QHeaderView.sectionsMovable = lambda self: self.isMovable()
+    QHeaderView.setSectionsMovable = \
+        lambda self, movable: self.setMovable(movable)
     del _QtGui
 
 
