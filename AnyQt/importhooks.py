@@ -1,4 +1,5 @@
 import sys
+import warnings
 
 from . import _api
 
@@ -37,8 +38,11 @@ class ImportHookBackport(object):
         if subpkg is not None:
             backportpkg += "." + subpkg
         module = __import__(backportpkg, fromlist=["_"])
-        print("Loaded module {} as a substitute for {}"
-              .format(module.__name__, fullname))
+        warnings.warn(
+            "Loaded module {} as a substitute for {}"
+            .format(module.__name__, fullname),
+            RuntimeWarning, stacklevel=2,
+        )
         sys.modules[fullname] = module
         return module
 
