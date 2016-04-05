@@ -16,8 +16,19 @@ DESCRIPTION = "PyQt4/PyQt5 compatibility layer."
 with io.open("README.txt", encoding="utf-8") as f:
     README = f.read()
 
-SETUP_REQUIRES = [
-    "setuptools"
+LICENSE = "GPLv3"
+
+CLASSIFIERS = [
+    "Development Status :: 1 - Planning",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: GNU General Public License v3 (GPLv3)",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 2",
+    "Programming Language :: Python :: 3",
+]
+
+KEYWORDS = [
+    "GUI", "PyQt4", "PyQt5", "compatibility"
 ]
 
 if __name__ == "__main__":
@@ -29,7 +40,8 @@ if __name__ == "__main__":
         url=URL,
         description=DESCRIPTION,
         long_description=README,
+        license=LICENSE,
+        keywords=KEYWORDS,
         packages=PACKAGES,
-        setup_requires=SETUP_REQUIRES,
         zip_safe=False,
     )
