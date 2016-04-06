@@ -6,7 +6,7 @@ MANIFEST
 
 *.egg-info
 
-docs/_build
+docs/build
 
 *.pyc
 __pycache__

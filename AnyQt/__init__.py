@@ -2,6 +2,9 @@ import sys
 
 __PREFERRED_API = None
 __SELECTED_API = None
+
+#: A string indicating which Qt api is used (will be `None` *until* a api is
+#: selected and commited to.
 USED_API = None
 
 
