@@ -223,7 +223,7 @@ __all__ = [
     'QSizePolicy',
     'QSlider',
     'QSortFilterProxyModel',
-    'QSound',
+    # 'QSound',
     'QSpacerItem',
     'QSpinBox',
     'QSplashScreen',
