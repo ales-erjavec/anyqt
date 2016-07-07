@@ -259,7 +259,19 @@ elif _api.USED_API == _api.QT_API_PYQT4:
     QHeaderView.sectionsMovable = lambda self: self.isMovable()
     QHeaderView.setSectionsMovable = \
         lambda self, movable: self.setMovable(movable)
-    del _QtGui
+
+    from PyQt4 import QtCore as __QtCore
+    QWidget = _QtGui.QWidget
+    __QPixmap = _QtGui.QPixmap
+
+    def _QWidget_grab(self, rect=__QtCore.QRect(0, 0, -1, -1)):
+        if not rect.isValid():
+            return __QPixmap.grabWidget(self)
+        else:
+            return __QPixmap.grabWidget(self, rect)
+
+    QWidget.grab = _QWidget_grab
+    del _QtGui, __QtCore
 
 elif _api.USED_API == _api.QT_API_PYSIDE:
     from PySide import QtGui as _QtGui
@@ -300,8 +312,19 @@ elif _api.USED_API == _api.QT_API_PYSIDE:
     QHeaderView.sectionsMovable = lambda self: self.isMovable()
     QHeaderView.setSectionsMovable = \
         lambda self, movable: self.setMovable(movable)
-    del _QtGui
 
+    from PySide import QtCore as __QtCore
+    QWidget = _QtGui.QWidget
+    __QPixmap = _QtGui.QPixmap
+
+    def _QWidget_grab(self, rect=__QtCore.QRect(0, 0, -1, -1)):
+        if not rect.isValid():
+            return __QPixmap.grabWidget(self)
+        else:
+            return __QPixmap.grabWidget(self, rect)
+
+    QWidget.grab = _QWidget_grab
+    del _QtGui, __QtCore
 
 try:
     QWIDGETSIZE_MAX  # Missing in older PyQt5, PyQt4
