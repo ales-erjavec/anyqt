@@ -182,6 +182,9 @@ Export a Qt5 compatible QtGui module.
     * 'qRgb'
     * 'qRgba'
 
+* When using a Qt4 API, the :class:`QWheelEvent` gains a Qt5 compatible
+  :func:`angleDelta` method.
+
 
 :mod:`AnyQt.QtWidgets`
 ----------------------
