@@ -5,7 +5,7 @@ import io
 from setuptools import setup, find_packages
 
 NAME = "AnyQt"
-VERSION = "0.0.3.dev0"
+VERSION = "0.0.3"
 AUTHOR = "Aleš Erjavec"
 AUTHOR_EMAIL = "ales.erjavec@fri.uni-lj.si"
 URL = "https://github.com/ales-erjavec/anyqt"
@@ -42,6 +42,7 @@ if __name__ == "__main__":
         long_description=README,
         license=LICENSE,
         keywords=KEYWORDS,
+        classifiers=CLASSIFIERS,
         packages=PACKAGES,
         zip_safe=False,
     )
