@@ -978,3 +978,75 @@ if _PYQT_VERSION < 0x50502:  # ?
     _fixes.fix_pyqt5_QGraphicsItem_itemChange()
     del _fixes
 
+from AnyQt.QtCore import Qt as __Qt
+
+
+# PyQt5 does not expose the obsolete QWheelEvent.orientation and
+# QWheelEvent.delta
+# Qt5 sends single wheel events if only one of angleDelta.{x,y} is non zero,
+# otherwise two events are dispatched. First with the correct combined
+# angleDelta and delta=angleDelta.y(), orientation=Qt.Vertical and
+# another with null angleDelta and delta=angleDelta.x(),
+# orientation = Qt.Horizontal
+# (see QWindowSystemInterface::handleWheelEvent for details).
+def __QWheelEvent_fingerprint(event):
+    return (event.timestamp(), event.modifiers(), event.buttons(),
+            event.globalPosF(), event.pos(), event.phase(), event.source())
+
+
+def __QWheelEvent_delta(self):
+    # type: () -> int
+    warnings.warn("QWheelEvent.delta is obsolete and removed in PyQt5. "
+                  "use angleDelta instead.",
+                  DeprecationWarning, stacklevel=2)
+    delta = self.angleDelta()  # type: QPoint
+    if delta.x() == 0 and delta.y() != 0:
+        __QWheelEvent_delta.__lastdeltax = (None, 0)
+        # vertical
+        return delta.y()
+    elif delta.x() != 0 and delta.y() == 0:
+        __QWheelEvent_delta.__lastdeltax = (None, 0)
+        # horizontal
+        return delta.x()
+    elif delta.x() != 0 and delta.y() != 0:
+        fp = __QWheelEvent_fingerprint(self)
+        # store the angleDelta.x() along with the event fingertip
+        __QWheelEvent_delta.__lastdeltax = fp, delta.x()
+        # vertical; the first of the assumed Qt4 compatibility events
+        return delta.y()
+    elif delta.x() == 0 and delta.y() == 0:
+        # horizontal; the second of the assumed Qt4 compatibility events
+        fp = __QWheelEvent_fingerprint(self)
+        lastfp, x = __QWheelEvent_delta.__lastdeltax
+        # It might be better to always return 0?
+        if fp is not None and lastfp == fp:
+            return x
+        else:
+            return 0
+    else:
+        assert False
+__QWheelEvent_delta.__lastdeltax = (None, 0)
+QWheelEvent.delta = __QWheelEvent_delta
+
+
+def __QWheelEvent_orientation(self):
+    # type: () -> Qt.Orientation
+    warnings.warn("QWheelEvent.orientation is obsolete and removed in PyQt5. "
+                  "Use angleDelta instead.",
+                  DeprecationWarning, stacklevel=2)
+    delta = self.angleDelta()  # type: QPoint
+    if delta.x() == 0 and delta.y() != 0:
+        __QWheelEvent_delta.__lastdeltax = (None, 0)
+        return __Qt.Vertical
+    elif delta.x() != 0 and delta.y() == 0:
+        __QWheelEvent_delta.__lastdeltax = (None, 0)
+        return __Qt.Horizontal
+    elif delta.x() != 0 and delta.y() != 0:
+        fp = __QWheelEvent_fingerprint(self)
+        __QWheelEvent_delta.__lastdeltax = fp, delta.x()
+        return __Qt.Vertical
+    elif delta.x() == 0 and delta.y() == 0:
+        return __Qt.Horizontal
+    else:
+        assert False
+QWheelEvent.orientation = __QWheelEvent_orientation
