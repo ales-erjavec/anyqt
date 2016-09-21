@@ -80,3 +80,15 @@ else:
 
 if USED_API is None:
     raise ImportError("PyQt4, PyQt5 or PySide are not available for import")
+
+from AnyQt import importhooks as __hooks
+
+if "ANYQT_HOOK_DENY" in os.environ:
+    for __denyapi in os.environ["ANYQT_HOOK_DENY"].split(","):
+        if __denyapi.lower() != USED_API:
+            __hooks.install_deny_hook(__denyapi.lower())
+
+if "ANYQT_HOOK_BACKPORT" in os.environ:
+    for __bacportapi in os.environ["ANYQT_HOOK_BACKPORT"].split(","):
+        if __bacportapi.lower() != USED_API:
+            __hooks.install_backport_hook(__bacportapi.lower())
