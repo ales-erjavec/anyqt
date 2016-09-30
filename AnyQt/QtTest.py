@@ -65,3 +65,54 @@ def _QTest_qWaitForWindowActive(widget, timeout=1000):
 if _api.USED_API in {_api.QT_API_PYQT4, _api.QT_API_PYSIDE}:
     QTest.qWaitForWindowExposed = _QTest_qWaitForWindowExposed
     QTest.qWaitForWindowActive = _QTest_qWaitForWindowActive
+
+    from AnyQt.QtCore import QObject, QByteArray as _QByteArray
+
+    # not exposed in PyQt4 or PySide. Going by PyQt5 interface
+    class QSignalSpy(QObject):
+        """
+        QSignalSpy(boundsignal)
+        """
+        def __init__(self, boundsig, **kwargs):
+            super(QSignalSpy, self).__init__(**kwargs)
+            from AnyQt.QtCore import QEventLoop, QTimer
+            self.__boundsig = boundsig
+            self.__boundsig.connect(lambda *args: self.__record(*args))
+            self.__recorded = []  # type: List[List[Any]]
+            self.__loop = QEventLoop()
+            self.__timer = QTimer(self, singleShot=True)
+            self.__timer.timeout.connect(self.__loop.quit)
+
+        def __record(self, *args):
+            self.__recorded.append(list(args))
+            if self.__loop.isRunning():
+                self.__loop.quit()
+
+        def signal(self):
+            return _QByteArray(self.__boundsig.signal[1:].encode("latin-1"))
+
+        def isValid(self):
+            return True
+
+        def wait(self, timeout=5000):
+            count = len(self)
+            self.__timer.stop()
+            self.__timer.setInterval(timeout)
+            self.__timer.start()
+            self.__loop.exec_()
+            self.__timer.stop()
+            return len(self) != count
+
+        def __getitem__(self, index):
+            return self.__recorded[index]
+
+        def __setitem__(self, index, value):
+            self.__recorded.__setitem__(index, value)
+
+        def __delitem__(self, index):
+            self.__recorded.__delitem__(index)
+
+        def __len__(self):
+            return len(self.__recorded)
+
+    del QObject

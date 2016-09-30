@@ -477,6 +477,8 @@ Export a Qt5 compatible QtWebKitWidgets module.
 :mod:`AnyQt.QtTest`
 -------------------
 
+A PyQt5 API compatible QSignalSpy class is provided when using PyQt4 backend
+
 :mod:`AnyQt.QtWinExtras`
 ------------------------
 
