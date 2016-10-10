@@ -989,10 +989,7 @@ from AnyQt.QtCore import Qt as __Qt
 # another with null angleDelta and delta=angleDelta.x(),
 # orientation = Qt.Horizontal
 # (see QWindowSystemInterface::handleWheelEvent for details).
-def __QWheelEvent_fingerprint(event):
-    return (event.timestamp(), event.modifiers(), event.buttons(),
-            event.globalPosF(), event.pos(), event.phase(), event.source())
-
+# Here we only report the Qt.Vertical parts of the non axis aligned deltas
 
 def __QWheelEvent_delta(self):
     # type: () -> int
@@ -1001,31 +998,20 @@ def __QWheelEvent_delta(self):
                   DeprecationWarning, stacklevel=2)
     delta = self.angleDelta()  # type: QPoint
     if delta.x() == 0 and delta.y() != 0:
-        __QWheelEvent_delta.__lastdeltax = (None, 0)
         # vertical
         return delta.y()
     elif delta.x() != 0 and delta.y() == 0:
-        __QWheelEvent_delta.__lastdeltax = (None, 0)
         # horizontal
         return delta.x()
     elif delta.x() != 0 and delta.y() != 0:
-        fp = __QWheelEvent_fingerprint(self)
-        # store the angleDelta.x() along with the event fingertip
-        __QWheelEvent_delta.__lastdeltax = fp, delta.x()
-        # vertical; the first of the assumed Qt4 compatibility events
+        # vertical; the first of the assumed Qt4 compatibility events.
         return delta.y()
     elif delta.x() == 0 and delta.y() == 0:
-        # horizontal; the second of the assumed Qt4 compatibility events
-        fp = __QWheelEvent_fingerprint(self)
-        lastfp, x = __QWheelEvent_delta.__lastdeltax
-        # It might be better to always return 0?
-        if fp is not None and lastfp == fp:
-            return x
-        else:
-            return 0
+        # horizontal; the second of the assumed Qt4 compatibility events.
+        # report a 0 delta
+        return 0
     else:
         assert False
-__QWheelEvent_delta.__lastdeltax = (None, 0)
 QWheelEvent.delta = __QWheelEvent_delta
 
 
@@ -1036,16 +1022,14 @@ def __QWheelEvent_orientation(self):
                   DeprecationWarning, stacklevel=2)
     delta = self.angleDelta()  # type: QPoint
     if delta.x() == 0 and delta.y() != 0:
-        __QWheelEvent_delta.__lastdeltax = (None, 0)
         return __Qt.Vertical
     elif delta.x() != 0 and delta.y() == 0:
-        __QWheelEvent_delta.__lastdeltax = (None, 0)
         return __Qt.Horizontal
     elif delta.x() != 0 and delta.y() != 0:
-        fp = __QWheelEvent_fingerprint(self)
-        __QWheelEvent_delta.__lastdeltax = fp, delta.x()
+        # vertical; the first assumed Qt4 compatibility events
         return __Qt.Vertical
     elif delta.x() == 0 and delta.y() == 0:
+        # horizontal; The second assumed Qt4 compatibility events
         return __Qt.Horizontal
     else:
         assert False
