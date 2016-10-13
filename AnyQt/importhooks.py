@@ -1,7 +1,9 @@
 import sys
 import warnings
 
-from . import _api
+from ._api import (
+    USED_API, QT_API_PYQT4, QT_API_PYQT5, QT_API_PYSIDE
+)
 
 
 class ImportHookBackport(object):
@@ -13,13 +15,13 @@ class ImportHookBackport(object):
         self.whichapi = whichapi
 
     def find_module(self, name, path=None):
-        if _api.USED_API != _api.QT_API_PYQT5:
+        if USED_API != QT_API_PYQT5:
             return
 
         toplevel = name.split(".", 1)[0]
-        if toplevel == "PyQt4" and self.whichapi == _api.QT_API_PYQT4:
+        if toplevel == "PyQt4" and self.whichapi == QT_API_PYQT4:
             return self
-        elif toplevel == "PySide" and self.whichapi == _api.QT_API_PYSIDE:
+        elif toplevel == "PySide" and self.whichapi == QT_API_PYSIDE:
             return self
         else:
             return
@@ -61,11 +63,11 @@ class ImportHookDeny(object):
 
     def find_module(self, name, path=None):
         toplevel = name.split(".")[0]
-        if self.whichapi == _api.QT_API_PYQT5 and toplevel == "PyQt5":
+        if self.whichapi == QT_API_PYQT5 and toplevel == "PyQt5":
             return self
-        elif self.whichapi == _api.QT_API_PYQT4 and toplevel == "PyQt4":
+        elif self.whichapi == QT_API_PYQT4 and toplevel == "PyQt4":
             return self
-        elif self.whichapi == _api.QT_API_PYSIDE and toplevel == "PySide":
+        elif self.whichapi == QT_API_PYSIDE and toplevel == "PySide":
             return self
         else:
             return None
@@ -93,7 +95,7 @@ def install_backport_hook(api):
     Loaded module AnyQt._backport as a substitute for PyQt4
 
     """
-    if api == _api.USED_API:
+    if api == USED_API:
         raise ValueError
 
     sys.meta_path.insert(0, ImportHookBackport(api))
@@ -116,7 +118,7 @@ def install_deny_hook(api):
     ImportError: Import of PyQt4 is denied.
 
     """
-    if api == _api.USED_API:
+    if api == USED_API:
         raise ValueError
 
     sys.meta_path.insert(0, ImportHookDeny(api))
