@@ -1,0 +1,40 @@
+ignore: "{% set data = load_setup_py_data() %}"
+
+package:
+  name: anyqt
+  version: {{ data['version'] }}
+
+source:
+  git_url: ../
+
+build:
+  noarch_python: True
+  number: 0
+
+  script:
+    - pip install --no-deps --no-index --no-cache ./
+    - if errorlevel 1 exit 1  # [win]
+
+requirements:
+  build:
+    - python
+    - setuptools
+    - pip
+    - wheel
+
+  run:
+    - python
+    - pyqt
+
+test:
+  imports:
+    - AnyQt.QtCore
+    - AnyQt.QtGui
+    - AnyQt.QtWidgets
+    - AnyQt.QtNetwork
+    - AnyQt.QtSvg
+
+about:
+  home: https://github.com/ales-erjavec/anyqt/
+  license: GNU General Public License v3 or later (GPLv3+)
+  summary: PyQt4/PyQt5 compatibility layer.
