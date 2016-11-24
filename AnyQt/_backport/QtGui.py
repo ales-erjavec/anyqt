@@ -922,11 +922,11 @@ QGraphicsItem.translate = _QGraphicsItem_translate
 def _QGraphicsItem_rotate(self, angle):
     warnings.warn(
         "QGraphicsItem.rotate(angle) is obsolete and removed in PyQt5. "
-        "Use setRotation(rotation() + angle)",
+        "Use setTransform(QTransform().rotate(angle), True)",
         DeprecationWarning,
         stacklevel=2
     )
-    self.setRotation(self.rotation() + angle)
+    self.setTransform(QTransform().rotate(angle), True)
 QGraphicsItem.rotate = _QGraphicsItem_rotate
 
 _QPainter_drawPixmapFragments1 = QPainter.drawPixmapFragments
