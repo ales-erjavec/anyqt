@@ -298,3 +298,22 @@ elif _api.USED_API == _api.QT_API_PYSIDE:
     del _QtCore, _QtGui, _major, _minor, _micro
     # Known to be in PyQt4 but missing in PySide:
     #     Q_ARG, Q_CLASSINFO, Q_ENUMS, Q_FLAGS, Q_RETURN_ARG, ...
+
+# Missing in PyQt4 <= 4.11.3
+if not hasattr(QEvent, "MacSizeChange"):
+    QEvent.MacSizeChange = QEvent.Type(177)
+
+if not hasattr(QEvent, "ContentsRectChange"):
+    QEvent.ContentsRectChange = QEvent.Type(178)
+
+if not hasattr(QEvent, "NonClientAreaMouseButtonDblClick"):
+    QEvent.NonClientAreaMouseButtonDblClick = QEvent.Type(176)
+
+if not hasattr(QEvent, "NonClientAreaMouseButtonPress"):
+    QEvent.NonClientAreaMouseButtonPress = QEvent.Type(174)
+
+if not hasattr(QEvent, "NonClientAreaMouseButtonRelease"):
+    QEvent.NonClientAreaMouseButtonRelease = QEvent.Type(175)
+
+if not hasattr(QEvent, "NonClientAreaMouseMove"):
+    QEvent.NonClientAreaMouseMove = QEvent.Type(173)
