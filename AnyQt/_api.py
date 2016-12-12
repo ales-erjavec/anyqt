@@ -4,6 +4,7 @@ NOTE: Importing this module will select and commit to a Qt API.
 
 import os
 import sys
+import warnings
 
 import AnyQt
 
@@ -50,8 +51,16 @@ elif "QT_API" in os.environ:
         # Qt.py allows both pyqt4 and pyqt to specify PyQt4.
         # When run from anaconda-navigator, pyqt is used.
         api = "pyqt4"
-    comittoapi(api)
-else:
+    if api in [QT_API_PYQT4, QT_API_PYQT5, QT_API_PYSIDE]:
+        comittoapi(api)
+    else:
+        warnings.warn(
+            "'QT_API' environment variable names an unknown Qt API ('{}')."
+            .format(os.environ["QT_API"]),
+            RuntimeWarning, stacklevel=3)
+        # pass through
+
+if USED_API is None:
     # Check sys.modules for existing imports
     __existing = None
     if "PyQt5" in sys.modules:
