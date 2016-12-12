@@ -45,7 +45,12 @@ def comittoapi(api):
 if AnyQt.__SELECTED_API is not None:
     comittoapi(AnyQt.__SELECTED_API)
 elif "QT_API" in os.environ:
-    comittoapi(os.environ["QT_API"].lower())
+    api = os.environ["QT_API"].lower()
+    if api == "pyqt":
+        # Qt.py allows both pyqt4 and pyqt to specify PyQt4.
+        # When run from anaconda-navigator, pyqt is used.
+        api = "pyqt4"
+    comittoapi(api)
 else:
     # Check sys.modules for existing imports
     __existing = None
