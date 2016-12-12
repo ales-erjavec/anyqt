@@ -1,4 +1,4 @@
-ignore: "{% set data = load_setup_py_data() %}"
+{% set data = load_setup_py_data() %}
 
 package:
   name: anyqt
@@ -8,19 +8,15 @@ source:
   git_url: ../
 
 build:
-  noarch_python: True
   number: 0
 
   script:
-    - pip install --no-deps --no-index --no-cache ./
-    - if errorlevel 1 exit 1  # [win]
+    - python setup.py install --single-version-externally-managed --record record.txt
 
 requirements:
   build:
     - python
     - setuptools
-    - pip
-    - wheel
 
   run:
     - python
@@ -36,5 +32,8 @@ test:
 
 about:
   home: https://github.com/ales-erjavec/anyqt/
-  license: GNU General Public License v3 or later (GPLv3+)
+  license: GPL-3.0
+  license_family: GPL3
   summary: PyQt4/PyQt5 compatibility layer.
+  doc_url: http://anyqt.readthedocs.io/en/latest
+  dev_url: https//github.com/ales-erjavec/anyqt
