@@ -34,7 +34,7 @@ def comittoapi(api):
     for name in check:
         if name.lower() != api and name in sys.modules:
             raise RuntimeError(
-                "{} was allready imported. Cannot commit to {}!"
+                "{} was already imported. Cannot commit to {}!"
                 .format(name, api)
             )
     else:
@@ -105,7 +105,7 @@ if "ANYQT_HOOK_DENY" in os.environ:
 
 if "ANYQT_HOOK_BACKPORT" in os.environ:
     from AnyQt.importhooks import install_backport_hook
-    for __bacportapi in os.environ["ANYQT_HOOK_BACKPORT"].split(","):
-        if __bacportapi.lower() != USED_API:
-            install_backport_hook(__bacportapi.lower())
+    for __backportapi in os.environ["ANYQT_HOOK_BACKPORT"].split(","):
+        if __backportapi.lower() != USED_API:
+            install_backport_hook(__backportapi.lower())
     del install_backport_hook
