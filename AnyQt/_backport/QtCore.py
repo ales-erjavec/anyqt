@@ -169,7 +169,7 @@ from PyQt5.QtCore import (
     pyqtSignal,
     # pyqtSignature,
     pyqtSlot,
-    pyqtWrapperType,
+    # pyqtWrapperType,
     qAbs,
     qAddPostRoutine,
     qChecksum,
