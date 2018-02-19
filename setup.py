@@ -28,7 +28,7 @@ CLASSIFIERS = [
 ]
 
 KEYWORDS = [
-    "GUI", "PyQt4", "PyQt5", "compatibility"
+    "GUI", "PyQt4", "PyQt5", "PySide", "PySide2", "compatibility"
 ]
 
 if __name__ == "__main__":

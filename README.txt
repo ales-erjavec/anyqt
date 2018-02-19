@@ -10,7 +10,7 @@ Features:
   versions
 * Which Qt api/backend is chosen can be controlled by a QT_API env variable
 * The api can be chosen/forced programmatically (as long as no
-  PyQt4/PyQt5/PySide was already imported)
+  PyQt4/PyQt5/PySide/PySide2 was already imported)
 * provides an optional compatibility import hook, that denys imports from
   conflicting Qt api, or intercepts and fakes a Qt4 api imports, to use a Qt5
   compatible API (some monkey patching is involved).

@@ -21,7 +21,7 @@ def setpreferredapi(api):
         raise RuntimeError("A Qt api {} was already selected"
                            .format(__SELECTED_API))
 
-    if api.lower() not in {"pyqt4", "pyqt5", "pyside"}:
+    if api.lower() not in {"pyqt4", "pyqt5", "pyside", "pyside2"}:
         raise ValueError(api)
     __PREFERRED_API = api.lower()
 
@@ -34,7 +34,7 @@ def selectapi(api):
     imported.
     """
     global __SELECTED_API, USED_API
-    if api.lower() not in {"pyqt4", "pyqt5", "pyside"}:
+    if api.lower() not in {"pyqt4", "pyqt5", "pyside", "pyside2"}:
         raise ValueError(api)
 
     if __SELECTED_API is not None and __SELECTED_API.lower() != api.lower():
@@ -68,5 +68,5 @@ def availableapi():
     """
     Return a list of available Qt interfaces.
     """
-    search = ["PyQt5", "PyQt4", "PySide"]
+    search = ["PyQt5", "PyQt4", "PySide", "PySide2"]
     return [name for name in search if __islocatable(name)]

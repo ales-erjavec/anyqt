@@ -18,7 +18,7 @@ USED_API = None
 QT_API_PYQT5 = "pyqt5"
 QT_API_PYQT4 = "pyqt4"
 QT_API_PYSIDE = "pyside"
-
+QT_API_PYSIDE2 = "pyside2"
 
 def comittoapi(api):
     """
@@ -29,8 +29,8 @@ def comittoapi(api):
     """
     global USED_API
     assert USED_API is None, "committoapi called again!"
-    check = ["PyQt4", "PyQt5", "PySide"]
-    assert api in [QT_API_PYQT5, QT_API_PYQT4, QT_API_PYSIDE]
+    check = ["PyQt4", "PyQt5", "PySide", "PySide2"]
+    assert api in [QT_API_PYQT5, QT_API_PYQT4, QT_API_PYSIDE, QT_API_PYSIDE2]
     for name in check:
         if name.lower() != api and name in sys.modules:
             raise RuntimeError(
@@ -51,7 +51,7 @@ elif "QT_API" in os.environ:
         # Qt.py allows both pyqt4 and pyqt to specify PyQt4.
         # When run from anaconda-navigator, pyqt is used.
         api = "pyqt4"
-    if api in [QT_API_PYQT4, QT_API_PYQT5, QT_API_PYSIDE]:
+    if api in [QT_API_PYQT4, QT_API_PYQT5, QT_API_PYSIDE, QT_API_PYSIDE2]:
         comittoapi(api)
     else:
         warnings.warn(
@@ -69,6 +69,8 @@ if USED_API is None:
         __existing = QT_API_PYQT4
     elif "PySide" in sys.modules:
         __existing = QT_API_PYSIDE
+    elif "PySide2" in sys.modules:
+        __existing = QT_API_PYSIDE2
 
     if __existing is not None:
         comittoapi(__existing)
@@ -85,6 +87,8 @@ if USED_API is None:
             __available = QT_API_PYQT4
         elif "PySide" in available:
             __available = QT_API_PYSIDE
+        elif "PySide2" in available:
+            __available = QT_API_PYSIDE2
 
         if __available is not None:
             comittoapi(__available)
@@ -93,7 +97,7 @@ if USED_API is None:
     del __existing
 
 if USED_API is None:
-    raise ImportError("PyQt4, PyQt5 or PySide are not available for import")
+    raise ImportError("PyQt4, PyQt5, PySide or PySide2 are not available for import")
 
 
 if "ANYQT_HOOK_DENY" in os.environ:

@@ -51,3 +51,5 @@ elif _api.USED_API == _api.QT_API_PYSIDE:
             qWebKitMajorVersion, qWebKitMinorVersion, qWebKitVersion
     except ImportError:
         pass
+elif _api.USED_API == _api.QT_API_PYSIDE2:
+    from PySide2.QtWebKit import *

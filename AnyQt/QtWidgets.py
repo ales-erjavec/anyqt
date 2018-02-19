@@ -326,6 +326,14 @@ elif _api.USED_API == _api.QT_API_PYSIDE:
     QWidget.grab = _QWidget_grab
     del _QtGui, __QtCore
 
+elif _api.USED_API == _api.QT_API_PYSIDE2:
+    from PySide2 import QtWidgets as _QtWidgets
+    globals().update(
+        {name: getattr(_QtWidgets, name)
+         for name in __Qt4_QtGui if hasattr(_QtWidgets, name)}
+    )
+    del _QtWidgets
+
 try:
     QWIDGETSIZE_MAX  # Missing in older PyQt5, PyQt4
 except NameError:

@@ -152,8 +152,15 @@ elif _api.USED_API == _api.QT_API_PYSIDE:
     del _QtGui
     # Known to be present in PyQt4 but not in PySide:
     #   QGlyphRun, QRawFont, QStaticText, QTextDocumentWriter
+elif _api.USED_API == _api.QT_API_PYSIDE2:
+    from PySide2 import QtGui as _QtGui
+    globals().update(
+        {name: getattr(_QtGui, name)
+         for name in __Qt4_QtGui if hasattr(_QtGui, name)}
+    )
+    del _QtGui
 
-if _api.USED_API in [_api.QT_API_PYQT4, _api.QT_API_PYSIDE]:
+if _api.USED_API in [_api.QT_API_PYQT4, _api.QT_API_PYSIDE, _api.QT_API_PYSIDE2]:
     from AnyQt import QtCore as __QtCore
 
     def __QWheelEvent_angleDelta(self):

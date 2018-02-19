@@ -6,3 +6,5 @@ elif _api == _api.QT_API_PYQT4:
     from PyQt4.QtXml import *
 elif _api == _api.QT_API_PYSIDE:
     from PySide.QtXml import *
+elif _api == _api.QT_API_PYSIDE2:
+    from PySide2.QtXml import *
