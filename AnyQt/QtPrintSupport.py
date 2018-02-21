@@ -47,13 +47,4 @@ elif _api.USED_API == _api.QT_API_PYSIDE:
         QPrinterInfo
     )
 elif _api.USED_API == _api.QT_API_PYSIDE2:
-    from PySide2.QtPrintSupport import (
-        QAbstractPrintDialog,
-        QPageSetupDialog,
-        QPrintDialog,
-        QPrintEngine,
-        QPrintPreviewDialog,
-        QPrintPreviewWidget,
-        QPrinter,
-        QPrinterInfo
-    )
+    from PySide2.QtPrintSupport import *
