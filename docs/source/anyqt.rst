@@ -485,7 +485,7 @@ Export a Qt5 compatible QtWebChannel module.
 :mod:`AnyQt.QtWebEngineWidgets`
 -------------------------------
 
-Export a Qt5 compatible QtWebEngineWidgets module.
+Qt5-only QtWebEngineWidgets module.
 
 :mod:`AnyQt.QtWebKit`
 ---------------------

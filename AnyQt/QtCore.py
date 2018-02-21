@@ -301,7 +301,7 @@ elif _api.USED_API == _api.QT_API_PYSIDE:
 elif _api.USED_API == _api.QT_API_PYSIDE2:
     from PySide2.QtCore import *
 
-    _major, _minor, _micro = tuple(map(int, _QtCore.qVersion().split(".")[:3]))
+    _major, _minor, _micro = tuple(map(int, qVersion().split(".")[:3]))
     QT_VERSION = (_major << 16) + (_minor << 8) + _micro
     QT_VERSION_STR = "{}.{}.{}".format(_major, _minor, _micro)
 
