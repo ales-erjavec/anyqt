@@ -67,10 +67,10 @@ if USED_API is None:
         __existing = QT_API_PYQT5
     elif "PyQt4" in sys.modules:
         __existing = QT_API_PYQT4
-    elif "PySide" in sys.modules:
-        __existing = QT_API_PYSIDE
     elif "PySide2" in sys.modules:
         __existing = QT_API_PYSIDE2
+    elif "PySide" in sys.modules:
+        __existing = QT_API_PYSIDE
 
     if __existing is not None:
         comittoapi(__existing)
