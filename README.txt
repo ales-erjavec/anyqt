@@ -1,7 +1,7 @@
 AnyQt
 -----
 
-PyQt4/PyQt5 compatibility layer.
+PyQt/PySide compatibility layer.
 
 Features:
 
