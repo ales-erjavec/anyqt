@@ -423,26 +423,41 @@ Export a Qt5 compatible QtWidgets module
 * A forward compatile :func:`QWidget.grab` method is made available when
   using a Qt4 backend
 
+:mod:`AnyQt.QtMultimedia`
+-------------------------
+
+:mod:`AnyQt.QtMultimediaWidgets`
+--------------------------------
+
+Qt5-only QtMultimediaWidgets module.
+
+:mod:`AnyQt.QtNetwork`
+----------------------
+
 :mod:`AnyQt.QtPrintSupport`
 ---------------------------
 
 Export a Qt5 compatible QtPrintSupport module.
 
+:mod:`AnyQt.Qml`
+----------------
+Qt5-only Qml module.
 
-:mod:`AnyQt.QtWebKit`
----------------------
+:mod:`AnyQt.QtQuick`
+--------------------
 
-Export a Qt5 compatible QtWebKit module.
+Qt5-only QtQuick module.
 
+:mod:`AnyQt.QtSql`
+------------------
 
-:mod:`AnyQt.QtWebKitWidgets`
-----------------------------
+:mod:`AnyQt.QtSvg`
+------------------
 
-Export a Qt5 compatible QtWebKitWidgets module.
+:mod:`AnyQt.QtTest`
+-------------------
 
-
-:mod:`AnyQt.QtNetwork`
-----------------------
+A PyQt5 API compatible QSignalSpy class is provided when using PyQt4 backend
 
 :mod:`AnyQt.QtDBus`
 -------------------
@@ -459,28 +474,44 @@ Export a Qt5 compatible QtWebKitWidgets module.
 * PyQt5: Full :mod:`PyQt5.QtMacExtras` is reexported
 * PyQt4: :class:`QMacPasteboardMime` is imported from :mod:`PyQt4.QtGui`
 
-:mod:`AnyQt.QtMultimedia`
--------------------------
-
-.. :mod:`AnyQt.QtMultimediaWidgets`
-   --------------------------------
-
 :mod:`AnyQt.QtOpenGL`
 ---------------------
 
-:mod:`AnyQt.QtSql`
-------------------
+:mod:`AnyQt.QtWebChannel`
+-------------------------------
 
-:mod:`AnyQt.QtSvg`
-------------------
+Export a Qt5 compatible QtWebChannel module.
 
-:mod:`AnyQt.QtTest`
--------------------
+:mod:`AnyQt.QtWebEngineWidgets`
+-------------------------------
 
-A PyQt5 API compatible QSignalSpy class is provided when using PyQt4 backend
+Qt5-only QtWebEngineWidgets module.
+
+:mod:`AnyQt.QtWebKit`
+---------------------
+
+Export a Qt5 compatible QtWebKit module.
+
+:mod:`AnyQt.QtWebKitWidgets`
+----------------------------
+
+Export a Qt5 compatible QtWebKitWidgets module.
+
+:mod:`AnyQt.QtWebSockets`
+-------------------------------
+
+Qt5-only QtWebSockets module.
 
 :mod:`AnyQt.QtWinExtras`
 ------------------------
+
+Qt5-only QtWinExtras module.
+
+:mod:`AnyQt.QtX11Extras`
+------------------------
+
+* Qt5: Full :mod:`QtX11Extras` is reexported
+* Qt4: :class:`QX11Info` is imported from :mod:`QtGui`
 
 :mod:`AnyQt.QtXml`
 ------------------

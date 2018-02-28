@@ -298,6 +298,12 @@ elif _api.USED_API == _api.QT_API_PYSIDE:
     del _QtCore, _QtGui, _major, _minor, _micro
     # Known to be in PyQt4 but missing in PySide:
     #     Q_ARG, Q_CLASSINFO, Q_ENUMS, Q_FLAGS, Q_RETURN_ARG, ...
+elif _api.USED_API == _api.QT_API_PYSIDE2:
+    from PySide2.QtCore import *
+
+    _major, _minor, _micro = tuple(map(int, qVersion().split(".")[:3]))
+    QT_VERSION = (_major << 16) + (_minor << 8) + _micro
+    QT_VERSION_STR = "{}.{}.{}".format(_major, _minor, _micro)
 
 # Missing in PyQt4 <= 4.11.3
 if not hasattr(QEvent, "MacSizeChange"):

@@ -6,7 +6,8 @@ elif _api.USED_API == _api.QT_API_PYQT4:
     from PyQt4.QtTest import *
 elif _api.USED_API == _api.QT_API_PYSIDE:
     from PySide.QtTest import *
-
+elif _api.USED_API == _api.QT_API_PYSIDE2:
+    from PySide2.QtTest import *
 
 def _QTest_qWaitForWindowExposed(widget, timeout=1000):
     # A Qt5 compatible (probably) QTest.qWaitForWindowExposed(QWidget, int)
