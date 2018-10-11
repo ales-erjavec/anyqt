@@ -63,6 +63,7 @@ def _QTest_qWaitForWindowActive(widget, timeout=1000):
 
     return window.isActiveWindow()
 
+
 if _api.USED_API in {_api.QT_API_PYQT4, _api.QT_API_PYSIDE}:
     QTest.qWaitForWindowExposed = _QTest_qWaitForWindowExposed
     QTest.qWaitForWindowActive = _QTest_qWaitForWindowActive
@@ -78,16 +79,18 @@ if _api.USED_API in {_api.QT_API_PYQT4, _api.QT_API_PYSIDE}:
             super(QSignalSpy, self).__init__(**kwargs)
             from AnyQt.QtCore import QEventLoop, QTimer
             self.__boundsig = boundsig
-            self.__boundsig.connect(lambda *args: self.__record(*args))
-            self.__recorded = []  # type: List[List[Any]]
-            self.__loop = QEventLoop()
+            self.__recorded = recorded = []  # type: List[List[Any]]
+            self.__loop = loop = QEventLoop()
             self.__timer = QTimer(self, singleShot=True)
             self.__timer.timeout.connect(self.__loop.quit)
 
-        def __record(self, *args):
-            self.__recorded.append(list(args))
-            if self.__loop.isRunning():
-                self.__loop.quit()
+            def record(*args):
+                # Record the emitted arguments and quit the loop if running.
+                # NOTE: not capturing self from parent scope
+                recorded.append(list(args))
+                if loop.isRunning():
+                    loop.quit()
+            boundsig.connect(record)
 
         def signal(self):
             return _QByteArray(self.__boundsig.signal[1:].encode("latin-1"))
