@@ -14,3 +14,6 @@ Features:
 * provides an optional compatibility import hook, that denys imports from
   conflicting Qt api, or intercepts and fakes a Qt4 api imports, to use a Qt5
   compatible API (some monkey patching is involved).
+
+The documentation is hosted at https://anyqt.readthedocs.io/en/stable/
+

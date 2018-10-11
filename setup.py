@@ -31,6 +31,12 @@ KEYWORDS = [
     "GUI", "PyQt4", "PyQt5", "PySide", "PySide2", "compatibility"
 ]
 
+PROJECT_URLS = {
+    "Bug Reports": "https://github.com/ales-erjavec/anyqt/issues",
+    "Source": URL,
+    "Documentation": "https://anyqt.readthedocs.io/en/stable/"
+}
+
 if __name__ == "__main__":
     setup(
         name=NAME,
@@ -44,5 +50,5 @@ if __name__ == "__main__":
         keywords=KEYWORDS,
         classifiers=CLASSIFIERS,
         packages=PACKAGES,
-        zip_safe=False,
+        project_urls=PROJECT_URLS,
     )
