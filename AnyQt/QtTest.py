@@ -90,6 +90,10 @@ if _api.USED_API in {_api.QT_API_PYQT4, _api.QT_API_PYSIDE}:
                 recorded.append(list(args))
                 if loop.isRunning():
                     loop.quit()
+            # Need to keep reference at least for PyQt4 4.11.4, sip 4.16.9 on
+            # python 3.4 (if the signal is emitted during gc collection, and
+            # the boundsignal is a QObject.destroyed signal).
+            self.__record = record
             boundsig.connect(record)
 
         def signal(self):
