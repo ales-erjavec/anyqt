@@ -294,6 +294,49 @@ if _api.USED_API in [_api.QT_API_PYQT4, _api.QT_API_PYSIDE]:
     QWheelEvent.angleDelta = __QWheelEvent_angleDelta
     QWheelEvent.pixelDelta = __QWheelEvent_pixelDelta
 
+if _api.USED_API == _api.QT_API_PYSIDE2:
+    from PySide2.QtCore import QRectF as __QRectF
+    _QPainter_drawPixmapFragments_orig = QPainter.drawPixmapFragments
+    class __ArgsTypeError(TypeError): pass
+
+    def _QPainter_drawPixmapFragments(painter, fragments, *args, **kwargs):
+        def f1(fragment, size, pixmap=None, hints=QPainter.PixmapFragmentHints()):
+            # dispatch to original if possible
+            if isinstance(size, int) and isinstance(pixmap, QPixmap):
+                _QPainter_drawPixmapFragments_orig(painter, fragment, size, pixmap, hints)
+            else:
+                raise __ArgsTypeError
+        try:
+            f1(fragments, *args, **kwargs)
+            return
+        except __ArgsTypeError:
+            pass
+
+        def f2(fragments, pixmap, hints=QPainter.PixmapFragmentHints()):
+            if isinstance(pixmap, QPixmap):
+                return (fragments, pixmap)
+            else:
+                raise TypeError
+        fragments, pixmap = f2(fragments, *args, **kwargs)
+        # emulate the api
+        painter.save()
+        oldtr = painter.worldTransform()
+        oldopacity = painter.opacity()
+        for frag in fragments:  # type: QPainter.PixmapFragment
+            tr = QTransform(oldtr)
+            x, y = frag.x, frag.y
+            tr.translate(x, y)
+            tr.rotate(frag.rotation)
+            painter.setTransform(tr)
+            painter.setOpacity(oldopacity * frag.opacity)
+            w = frag.scaleX * frag.width
+            h = frag.scaleY * frag.height
+            sourceRect = __QRectF(
+                frag.sourceLeft, frag.sourceTop, frag.width, frag.height)
+            painter.drawPixmap(
+                __QRectF(-0.5 * w, -0.5 * h, w, h), pixmap, sourceRect)
+        painter.restore()
+    QPainter.drawPixmapFragments = _QPainter_drawPixmapFragments
 
 if _api.USED_API == _api.QT_API_PYQT5:
     # PyQt5 does not support setPageSize(QPageSize) overload
