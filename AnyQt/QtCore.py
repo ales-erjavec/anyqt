@@ -410,6 +410,10 @@ if _api.USED_API == _api.QT_API_PYSIDE2:
 
         from AnyQt._compat import qvariant_cast as __qvariant_cast
         __qvariant_cast = staticmethod(__qvariant_cast)
+    try:
+        QStringListModel
+    except NameError:
+        from PySide2.QtGui import QStringListModel
 
 
 pyqtSignal = Signal

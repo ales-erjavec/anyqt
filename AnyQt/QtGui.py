@@ -266,6 +266,8 @@ elif _api.USED_API == _api.QT_API_PYSIDE:
     #   QGlyphRun, QRawFont, QStaticText, QTextDocumentWriter
 elif _api.USED_API == _api.QT_API_PYSIDE2:
     from PySide2.QtGui import *
+    from PySide2.QtWidgets import QUndoCommand, QUndoStack, QUndoGroup
+    from PySide2.QtWidgets import QShortcut, QAction, QActionGroup
 
 if _api.USED_API in [_api.QT_API_PYQT4, _api.QT_API_PYSIDE]:
     from AnyQt import QtCore as __QtCore
