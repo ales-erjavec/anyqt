@@ -11,6 +11,16 @@ elif _api.USED_API == _api.QT_API_PYSIDE:
 elif _api.USED_API == _api.QT_API_PYSIDE2:
     from PySide2.QtTest import *
 
+
+def _QTest_qSleep(ms: int):
+    import time
+    time.sleep(ms / 1000)
+
+
+if not hasattr(QTest, "qSleep"):
+    QTest.qSleep = _QTest_qSleep
+
+
 def _QTest_qWaitForWindowExposed(widget, timeout=1000):
     # A Qt5 compatible (probably) QTest.qWaitForWindowExposed(QWidget, int)
     # (mostly copied from qtestsystem.h in qt5/qtbase)
@@ -35,6 +45,10 @@ def _QTest_qWaitForWindowExposed(widget, timeout=1000):
         QTest.qSleep(10)
 
     return window.testAttribute(Qt.WA_Mapped)
+
+
+if not hasattr(QTest, "qWaitForWindowExposed"):
+    QTest.qWaitForWindowExposed = _QTest_qWaitForWindowExposed
 
 
 def _QTest_qWaitForWindowActive(widget, timeout=1000):
@@ -66,10 +80,11 @@ def _QTest_qWaitForWindowActive(widget, timeout=1000):
     return window.isActiveWindow()
 
 
-if _api.USED_API in {_api.QT_API_PYQT4, _api.QT_API_PYSIDE}:
-    QTest.qWaitForWindowExposed = _QTest_qWaitForWindowExposed
+if not hasattr(QTest, "qWaitForWindowActive"):
     QTest.qWaitForWindowActive = _QTest_qWaitForWindowActive
 
+
+if _api.USED_API in {_api.QT_API_PYQT4, _api.QT_API_PYSIDE, _api.QT_API_PYSIDE2}:
     from AnyQt.QtCore import QObject, QByteArray as _QByteArray
 
     # not exposed in PyQt4 or PySide. Going by PyQt5 interface
@@ -134,16 +149,17 @@ def _QTest_qWaitFor(predicate, timeout=5000):
     from AnyQt.QtCore import Qt, QCoreApplication, QEvent, QEventLoop, QDeadlineTimer
     if predicate():
         return True
-    remaining = timeout
-    deadline = QDeadlineTimer(remaining, Qt.PreciseTimer)
+    deadline = QDeadlineTimer(Qt.PreciseTimer)
+    deadline.setRemainingTime(timeout)
     while True:
         QCoreApplication.processEvents(QEventLoop.AllEvents)
         QCoreApplication.sendPostedEvents(None, QEvent.DeferredDelete)
-        remaining = deadline.remainingTime()
-        if remaining > 0:
-            QTest.qSleep(min(10, remaining))
         if predicate():
             return True
+        remaining = deadline.remainingTime()
+
+        if remaining > 0:
+            QTest.qSleep(min(10, remaining))
         remaining = deadline.remainingTime()
         if remaining <= 0:
             break
@@ -152,5 +168,26 @@ def _QTest_qWaitFor(predicate, timeout=5000):
 
 if not hasattr(QTest, "qWaitFor"):  # Qt < 5.10
     QTest.qWaitFor = _QTest_qWaitFor
+
+
+def _QTest_qWait(timeout):
+    from AnyQt.QtCore import Qt, QCoreApplication, QEvent, QEventLoop, QDeadlineTimer
+    remaining = timeout
+    deadline = QDeadlineTimer(remaining, Qt.PreciseTimer)
+    while True:
+        QCoreApplication.processEvents(QEventLoop.AllEvents, remaining)
+        QCoreApplication.sendPostedEvents(None, QEvent.DeferredDelete)
+        remaining = deadline.remainingTime()
+        if remaining <= 0:
+            break
+        QTest.qSleep(min(10, remaining))
+        remaining = deadline.remainingTime()
+        if remaining <= 0:
+            break
+
+
+if not hasattr(QTest, "qWait"):  # PySide2
+    QTest.qWait = _QTest_qWait
+
 
 _api.apply_global_fixes(globals())
