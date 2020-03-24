@@ -384,6 +384,38 @@ if not hasattr(QLibraryInfo, "LibraryLocation"):
 if not hasattr(QLibraryInfo, "location"):
     QLibraryInfo.location = QLibraryInfo.path
 
+
+if _api.USED_API == _api.QT_API_PYSIDE2:
+    class QSettings(QSettings):
+        """
+        A subclass of QSettings with a simulated `type` parameter in
+        value method.
+
+        """
+        # QSettings.value does not have `type` type in PySide2
+        def value(self, key, defaultValue=None, type=None):
+            """
+            Returns the value for setting key. If the setting doesn't exist,
+            returns defaultValue.
+            """
+            if not self.contains(key):
+                return defaultValue
+
+            value = super().value(key)
+            if type is not None:
+                value = self.__qvariant_cast(value, type)
+                if value is None:
+                    value = defaultValue
+            return value
+
+        from AnyQt._compat import qvariant_cast as __qvariant_cast
+        __qvariant_cast = staticmethod(__qvariant_cast)
+
+
+pyqtSignal = Signal
+pyqtSlot = Slot
+pyqtProperty = Property
+
 #: Qt version as a (major, minor, micro) tuple
 QT_VERSION_INFO = tuple(map(int, qVersion().split(".")[:3]))
 
