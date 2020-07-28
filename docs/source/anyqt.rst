@@ -518,3 +518,8 @@ Qt5-only QtWinExtras module.
 
 :mod:`AnyQt.QtXmlPatterns`
 --------------------------
+
+:mod:`AnyQt.sip`
+----------------
+
+When using a PyQt4/5 then this is an alias for the corresponding sip module
