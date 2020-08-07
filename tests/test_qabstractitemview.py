@@ -6,7 +6,7 @@ from AnyQt.QtWidgets import QApplication, QTableView, QStyledItemDelegate, \
     QStyleOptionViewItem
 
 
-class TestQAction_setMenu(unittest.TestCase):
+class Test_QAbstractItemView_itemDelegate(unittest.TestCase):
     @classmethod
     def setUpClass(cls) -> None:
         super().setUpClass()

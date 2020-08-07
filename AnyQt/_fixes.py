@@ -171,13 +171,70 @@ def fix_pyqt5_missing_enum_members(namespace: Dict[str, Any]):
                         setattr(type_, name, value)
 
 
+def fix_pyside_QActionEvent_action(namespace):
+    if namespace.get("__name__") != "AnyQt.QtGui":
+        return
+    import ctypes
+    try:
+        from PySide2 import shiboken2  # PySide2 < 5.12.0
+    except ImportError:
+        import shiboken2
+    from AnyQt.QtGui import QActionEvent
+    from AnyQt.QtWidgets import QAction
+
+    class _QActionEvent(ctypes.Structure):
+        _fields_ = [
+            ("vtable", ctypes.c_void_p),
+            # QEvent
+            ("d", ctypes.c_void_p),       # private data ptr
+            ("t", ctypes.c_ushort),       # type
+            ("_flags", ctypes.c_ushort),  # various flags
+            # QActionEvent
+            ("act", ctypes.c_void_p),     # QAction *act
+            ("bef", ctypes.c_void_p),     # QAction *bef
+        ]
+
+        def action(self):
+            return from_address(self.act, QAction)
+
+        def before(self):
+            return from_address(self.bef, QAction)
+
+        @classmethod
+        def from_event(cls, event: QActionEvent):
+            p, = shiboken2.getCppPointer(event)
+            return cls.from_address(p)
+
+    def from_address(address: int, type_):
+        if address:
+            return shiboken2.wrapInstance(address, type_)
+        else:
+            return None
+
+    def action(self):
+        ev = _QActionEvent.from_event(self)
+        return ev.action()
+
+    def before(self):
+        ev = _QActionEvent.from_event(self)
+        return ev.before()
+
+    if not hasattr(QActionEvent, "action"):
+        QActionEvent.action = action
+    if not hasattr(QActionEvent, "before"):
+        QActionEvent.before = before
+
+
 GLOBAL_FIXES = {
     "pyqt6": [
         fix_pyqt6_unscoped_enum,
         fix_pyqt6_qtgui_qaction_menu,
     ],
     "pyqt5": [
-        fix_pyqt5_missing_enum_members
+        fix_pyqt5_missing_enum_members,
+    ],
+    "pyside2": [
+        fix_pyside_QActionEvent_action,
     ]
 }
 
