@@ -225,6 +225,42 @@ def fix_pyside_QActionEvent_action(namespace):
         QActionEvent.before = before
 
 
+def fix_pyside_exec(namespace):
+    if namespace.get("__name__") == "AnyQt.QtWidgets":
+        from PySide2.QtWidgets import QApplication, QDialog, QMenu
+        if "exec" not in QApplication.__dict__:
+            QApplication.exec = lambda self: QApplication.exec_()
+        if not hasattr(QDialog, "exec"):
+            QDialog.exec = lambda self: QDialog.exec_(self)
+        if not hasattr(QMenu, "exec"):
+            QMenu.exec = lambda self: QMenu.exec_(self)
+    if namespace.get("__name__") == "AnyQt.QtGui":
+        from PySide2.QtGui import QGuiApplication, QDrag
+        if "exec" not in QGuiApplication.__dict__:
+            QGuiApplication.exec = lambda self: QGuiApplication.exec_()
+        if not hasattr(QDrag, "exec"):
+            QDrag.exec = (
+                lambda self, *args, **kwargs: QDrag.exec_(self, *args, **kwargs)
+            )
+    elif namespace.get("__name__") == "AnyQt.QtCore":
+        from PySide2.QtCore import QCoreApplication, QEventLoop, QThread
+        if not hasattr(QCoreApplication, "exec"):
+            QCoreApplication.exec = lambda self: QCoreApplication.exec_()
+        if not hasattr(QEventLoop, "exec"):
+            QEventLoop.exec = (
+                lambda self, *args, **kwargs:
+                    QEventLoop.exec_(self, *args, **kwargs)
+            )
+        if not hasattr(QThread, "exec"):
+            QThread.exec = lambda self: QThread.exec_(self)
+    elif namespace.get("__name__") == "AnyQt.QtPrintSupport":
+        from PySide2.QtPrintSupport import QPageSetupDialog, QPrintDialog
+        if "exec" not in QPageSetupDialog.__dict__:
+            QPageSetupDialog.exec = lambda self: QPageSetupDialog.exec_(self)
+        if "exec" not in QPrintDialog.__dict__:
+            QPrintDialog.exec = lambda self: QPrintDialog.exec_(self)
+
+
 GLOBAL_FIXES = {
     "pyqt6": [
         fix_pyqt6_unscoped_enum,
@@ -235,6 +271,7 @@ GLOBAL_FIXES = {
     ],
     "pyside2": [
         fix_pyside_QActionEvent_action,
+        fix_pyside_exec,
     ]
 }
 
