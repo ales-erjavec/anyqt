@@ -136,6 +136,45 @@ __Qt4_QtGui = [
 
 if _api.USED_API == _api.QT_API_PYQT5:
     from PyQt5.QtGui import *
+    from PyQt5.QtCore import PYQT_VERSION as _PYQT_VERSION
+
+    if _PYQT_VERSION < 0x50c00:  # 5.12.0
+
+        class WheelEvent(QWheelEvent):
+            from PyQt5.QtCore import (QPointF as _QPointF,
+                                      QPoint as _QPoint,
+                                      Qt as _Qt)
+
+            _constructor_signature = \
+                ((_QPointF, _QPoint),
+                 (_QPointF, _QPoint),
+                 (_QPoint,),
+                 (_QPoint,),
+                 (_Qt.MouseButtons, _Qt.MouseButton),
+                 (_Qt.KeyboardModifiers, _Qt.KeyboardModifier),
+                 (_Qt.ScrollPhase,),
+                 (bool,),
+                 (_Qt.MouseEventSource,))
+
+            def __init__(self, *args):
+                sig = WheelEvent._constructor_signature
+                if len(args) == len(sig) and \
+                        all(any(isinstance(a, t) for t in ts)
+                            for a, ts in zip(args, sig)):
+                    angleDelta = args[3]
+                    if abs(angleDelta.x()) > abs(angleDelta.y()):
+                        orientation = 0x1  # horizontal
+                        delta = angleDelta.x()
+                    else:
+                        orientation = 0x2  # vertical
+                        delta = angleDelta.y()
+                    args = args[:4] + \
+                           (delta, orientation) + \
+                           args[4:7] + (args[8], args[7])
+                super().__init__(*args)
+
+        QWheelEvent = WheelEvent
+
 elif _api.USED_API == _api.QT_API_PYQT4:
     import PyQt4.QtGui as _QtGui
     globals().update(
