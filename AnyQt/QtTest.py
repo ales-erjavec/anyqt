@@ -124,3 +124,29 @@ if _api.USED_API in {_api.QT_API_PYQT4, _api.QT_API_PYSIDE}:
             return len(self.__recorded)
 
     del QObject
+
+
+def _QTest_qWaitFor(predicate, timeout=5000):
+    # type: (Callable[[], bool], int) -> bool
+    # Copied and adapted from Qt
+    from AnyQt.QtCore import Qt, QCoreApplication, QEvent, QEventLoop, QDeadlineTimer
+    if predicate():
+        return True
+    remaining = timeout
+    deadline = QDeadlineTimer(remaining, Qt.PreciseTimer)
+    while True:
+        QCoreApplication.processEvents(QEventLoop.AllEvents)
+        QCoreApplication.sendPostedEvents(None, QEvent.DeferredDelete)
+        remaining = deadline.remainingTime()
+        if remaining > 0:
+            QTest.qSleep(min(10, remaining))
+        if predicate():
+            return True
+        remaining = deadline.remainingTime()
+        if remaining <= 0:
+            break
+    return predicate()  # Last chance
+
+
+if not hasattr(QTest, "qWaitFor"):  # Qt < 5.10
+    QTest.qWaitFor = _QTest_qWaitFor
