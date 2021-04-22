@@ -214,6 +214,8 @@ __Qt4_QtGui = [
 if _api.USED_API == _api.QT_API_PYQT6:
     from PyQt6.QtWidgets import *
     from PyQt6.QtGui import QAction, QActionGroup
+    QStyle.State = QStyle.StateFlag
+    QStyle.SubControls = QStyle.SubControl
 elif _api.USED_API == _api.QT_API_PYQT5:
     from PyQt5.QtWidgets import *
     from PyQt5.QtCore import PYQT_VERSION as _PYQT_VERSION

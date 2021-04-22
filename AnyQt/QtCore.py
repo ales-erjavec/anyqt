@@ -248,6 +248,27 @@ if _api.USED_API == _api.QT_API_PYQT6:
     Signal = pyqtSignal
     Slot = pyqtSlot
     Property = pyqtProperty
+    Qt.Alignment = Qt.AlignmentFlag
+    Qt.ApplicationStates = Qt.ApplicationState
+    Qt.DockWidgetAreas = Qt.DockWidgetArea
+    Qt.Edges = Qt.Edge
+    Qt.FindChildOptions = Qt.FindChildOption
+    Qt.GestureFlags = Qt.GestureFlag
+    Qt.ImageConversionFlags = Qt.ImageConversionFlag
+    Qt.ItemFlags = Qt.ItemFlag
+    Qt.KeyboardModifiers = Qt.KeyboardModifier
+    Qt.MatchFlags = Qt.MatchFlag
+    Qt.MouseButtons = Qt.MouseButton
+    Qt.MouseEventFlags = Qt.MouseEventFlag
+    Qt.Orientations = Qt.Orientation
+    Qt.ScreenOrientations = Qt.ScreenOrientation
+    # Qt.SplitBehavior = Qt.SplitBehaviorFlags
+    Qt.TextInteractionFlags = Qt.TextInteractionFlag
+    Qt.ToolBarAreas = Qt.ToolBarArea
+    Qt.TouchPointStates = Qt.TouchPointState
+    Qt.WindowFlags = Qt.WindowType
+    Qt.WindowStates = Qt.WindowState
+    QItemSelectionModel.SelectionFlags = QItemSelectionModel.SelectionFlag
 elif _api.USED_API == _api.QT_API_PYQT5:
     from PyQt5.QtCore import *
     try:
