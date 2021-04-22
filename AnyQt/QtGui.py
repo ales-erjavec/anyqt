@@ -140,6 +140,7 @@ if _api.USED_API == _api.QT_API_PYQT6:
     from PyQt6.QtGui import *
 elif _api.USED_API == _api.QT_API_PYQT5:
     from PyQt5.QtGui import *
+    from PyQt5.QtWidgets import QUndoCommand, QUndoStack, QUndoGroup
     from PyQt5.QtCore import PYQT_VERSION as _PYQT_VERSION
 
     if _PYQT_VERSION < 0x50c00:  # 5.12.0
