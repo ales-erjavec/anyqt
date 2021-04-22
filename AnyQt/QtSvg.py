@@ -2,6 +2,7 @@ from . import _api
 
 if _api.USED_API == _api.QT_API_PYQT6:
     from PyQt6.QtSvg import *
+    from PyQt6.QtSvgWidgets import QSvgWidget, QGraphicsSvgItem
 elif _api.USED_API == _api.QT_API_PYQT5:
     from PyQt5.QtSvg import *
 elif _api.USED_API == _api.QT_API_PYQT4:

@@ -490,6 +490,10 @@ Qt5-only QtQuick module.
 :mod:`AnyQt.QtSvg`
 ------------------
 
+:mod:`AnyQt.QtSvgWidgets`
+-------------------------
+A Qt6 compatible QtSvgWidgets module
+
 :mod:`AnyQt.QtTest`
 -------------------
 
