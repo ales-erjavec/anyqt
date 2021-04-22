@@ -323,3 +323,6 @@ if not hasattr(QEvent, "NonClientAreaMouseButtonRelease"):
 
 if not hasattr(QEvent, "NonClientAreaMouseMove"):
     QEvent.NonClientAreaMouseMove = QEvent.Type(173)
+
+#: Qt version as a (major, minor, micro) tuple
+QT_VERSION_INFO = tuple(map(int, qVersion().split(".")[:3]))
