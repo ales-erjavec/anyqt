@@ -213,9 +213,9 @@ __Qt4_QtGui = [
 
 if _api.USED_API == _api.QT_API_PYQT6:
     from PyQt6.QtWidgets import *
-    from PyQt6.QtGui import (
-        QAction, QActionGroup, QUndoCommand, QUndoStack, QUndoGroup
-    )
+    from PyQt6.QtGui import QAction, QActionGroup
+    from PyQt6.QtGui import QUndoCommand, QUndoStack, QUndoGroup
+    from PyQt6.QtGui import QShortcut
     QStyle.State = QStyle.StateFlag
     QStyle.SubControls = QStyle.SubControl
 elif _api.USED_API == _api.QT_API_PYQT5:
