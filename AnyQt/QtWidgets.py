@@ -333,3 +333,16 @@ try:
     QWIDGETSIZE_MAX  # Missing in older PyQt5, PyQt4
 except NameError:
     QWIDGETSIZE_MAX = (1 << 24) - 1
+
+
+if not hasattr(QWidget, "screen"):
+    def QWidget_screen(self):
+        screens = QApplication.screens()
+        desktop = QApplication.desktop()
+        screen_num = desktop.screenNumber(self)
+        if 0 <= screen_num < len(screens):
+            return screens[screen_num]
+        else:
+            return QApplication.primaryScreen()
+    QWidget.screen = QWidget_screen
+    del QWidget_screen

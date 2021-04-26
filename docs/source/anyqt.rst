@@ -425,6 +425,9 @@ Export a Qt5 compatible QtWidgets module
 * A forward compatile :func:`QWidget.grab` method is made available when
   using a Qt4 backend
 
+* A QWidget.screen method is made available when not present in Qt5 (<5.14).
+
+
 :mod:`AnyQt.QtMultimedia`
 -------------------------
 
