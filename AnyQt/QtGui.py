@@ -1,3 +1,5 @@
+from warnings import warn
+
 from . import _api
 
 # Names imported from Qt4's QtGui module
@@ -236,3 +238,19 @@ if not hasattr(QGuiApplication, 'screenAt'):
         return None
     QGuiApplication.screenAt = staticmethod(QGuiApplication_screenAt)
     del QGuiApplication_screenAt
+
+
+# Alias QFontMetrics(F).horizontalAdvance to QFontMetrics(F).width
+# when it does not exists
+if not hasattr(QFontMetrics, "horizontalAdvance"):
+    def QFontMetrics_horizontalAdvance(self, *args, **kwargs):
+        return __QFontMetrics_width(self, *args, **kwargs)
+    __QFontMetrics_width = QFontMetrics.width
+    QFontMetrics.horizontalAdvance = QFontMetrics_horizontalAdvance
+    del QFontMetrics_horizontalAdvance
+if not hasattr(QFontMetricsF, "horizontalAdvance"):
+    def QFontMetricsF_horizontalAdvance(self, *args, **kwargs):
+        return __QFontMetricsF_width(self, *args, **kwargs)
+    __QFontMetricsF_width = QFontMetricsF.width
+    QFontMetricsF.horizontalAdvance = QFontMetricsF_horizontalAdvance
+    del QFontMetricsF_horizontalAdvance

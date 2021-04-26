@@ -188,6 +188,9 @@ Export a Qt5 compatible QtGui module.
 * A backported QGuiApplication.screenAt static method is added if not
   implemented by Qt5
 
+* A QFontMetrics(F).horizontalAdvance method is made available if not present
+  in Qt (<5.11)
+
 :mod:`AnyQt.QtWidgets`
 ----------------------
 
