@@ -185,6 +185,8 @@ Export a Qt5 compatible QtGui module.
 * When using a Qt4 API, the :class:`QWheelEvent` gains a Qt5 compatible
   :func:`angleDelta` method.
 
+* A backported QGuiApplication.screenAt static method is added if not
+  implemented by Qt5
 
 :mod:`AnyQt.QtWidgets`
 ----------------------

@@ -221,3 +221,18 @@ if _api.USED_API in [_api.QT_API_PYQT4, _api.QT_API_PYSIDE]:
     QWheelEvent.angleDelta = __QWheelEvent_angleDelta
     QWheelEvent.pixelDelta = __QWheelEvent_pixelDelta
 
+
+if not hasattr(QGuiApplication, 'screenAt'):
+    def QGuiApplication_screenAt(pos):
+        visited = set()
+        for screen in QGuiApplication.screens():
+            if screen in visited:
+                continue
+            # The virtual siblings include the screen itself, so iterate directly
+            for sibling in screen.virtualSiblings():
+                if sibling.geometry().contains(pos):
+                    return sibling
+                visited.add(sibling)
+        return None
+    QGuiApplication.screenAt = staticmethod(QGuiApplication_screenAt)
+    del QGuiApplication_screenAt
