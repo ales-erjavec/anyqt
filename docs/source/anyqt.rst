@@ -191,6 +191,9 @@ Export a Qt5 compatible QtGui module.
 * A QFontMetrics(F).horizontalAdvance method is made available if not present
   in Qt (<5.11)
 
+* An missing QPdfWriter.setPageSize(QPageSize) overload for PyQt5 is added.
+
+
 :mod:`AnyQt.QtWidgets`
 ----------------------
 

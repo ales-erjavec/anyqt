@@ -224,6 +224,18 @@ if _api.USED_API in [_api.QT_API_PYQT4, _api.QT_API_PYSIDE]:
     QWheelEvent.pixelDelta = __QWheelEvent_pixelDelta
 
 
+if _api.USED_API == _api.QT_API_PYQT5:
+    # PyQt5 does not support setPageSize(QPageSize) overload
+    def QPdfWriter_setPageSize(self, size):
+        if isinstance(size, QPageSize):
+            self.setPageSizeMM(size.size(QPageSize.Millimeter))
+            return self.pageLayout().pageSize().isEquivalentTo(size)
+        else:
+            __QPdfWriter_setPageSize(self, size)
+    __QPdfWriter_setPageSize = QPdfWriter.setPageSize
+    QPdfWriter.setPageSize = QPdfWriter_setPageSize
+    del QPdfWriter_setPageSize
+
 if not hasattr(QGuiApplication, 'screenAt'):
     def QGuiApplication_screenAt(pos):
         visited = set()
