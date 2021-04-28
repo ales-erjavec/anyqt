@@ -379,6 +379,24 @@ if not hasattr(QAbstractItemView, "viewOptions"):
         return opt
     QAbstractItemView.viewOptions = __QAbstractItemView_viewOptions
     del __QAbstractItemView_viewOptions
+elif not hasattr(QAbstractItemView, "initViewItemOption"):
+    def __QAbstractItemView_initViewItemOption(self, option):
+        opt = self.viewOptions()
+        option.initFrom(self)
+        option.state = opt.state
+        option.font = opt.font
+        option.decorationSize = opt.decorationSize
+        option.decorationPosition = opt.decorationPosition
+        option.decorationAlignment = opt.decorationAlignment
+        option.displayAlignment = opt.displayAlignment
+        option.textElideMode = opt.textElideMode
+        option.rect = opt.rect
+        option.showDecorationSelected = opt.showDecorationSelected
+        option.features = opt.features
+        option.locale = opt.locale
+        option.widget = opt.widget
+    QAbstractItemView.initViewItemOption = __QAbstractItemView_initViewItemOption
+    del __QAbstractItemView_initViewItemOption
 
 if hasattr(QApplication, "desktop"):
     def QApplication_desktop():
