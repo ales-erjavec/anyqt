@@ -254,3 +254,16 @@ if not hasattr(QFontMetricsF, "horizontalAdvance"):
     __QFontMetricsF_width = QFontMetricsF.width
     QFontMetricsF.horizontalAdvance = QFontMetricsF_horizontalAdvance
     del QFontMetricsF_horizontalAdvance
+
+
+# Warn on deprecated QFontMetrics.width
+def QFontMetrics_width(self, *args, **kwargs):
+    warn("QFontMetrics(F).width is obsolete. "
+         "Replace with QFontMetrics(F).horizontalAdvance",
+         DeprecationWarning, stacklevel=2)
+    return self.horizontalAdvance(*args, **kwargs)
+
+
+QFontMetricsF.width = QFontMetrics_width
+QFontMetrics.width = QFontMetrics_width
+del QFontMetrics_width
