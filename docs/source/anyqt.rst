@@ -438,8 +438,11 @@ Export a Qt5 compatible QtWidgets module
   :class:`QStyleOptionViewItemV4` is exported as
   :class:`QStyleOptionViewItem`
 
-* A forward compatile :func:`QWidget.grab` method is made available when
-  using a Qt4 backend
+* A forward compatible :func:`QWidget.grab` method is made available when
+  using a Qt4 backend.
+
+* A backward compatible :func:`QAbstractItemView.viewOptions` method is made
+  available when using a Qt6 backend.
 
 * A :func:`QWidget.screen` method is made available when not present in
   Qt5 (<5.14).

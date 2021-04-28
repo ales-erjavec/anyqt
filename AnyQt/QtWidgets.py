@@ -372,6 +372,14 @@ if hasattr(QLineEdit, "getTextMargins"):
     QLineEdit.getTextMargins = __QLineEdit_getTextMargins
     del __QLineEdit_getTextMargins
 
+if not hasattr(QAbstractItemView, "viewOptions"):
+    def __QAbstractItemView_viewOptions(self):
+        opt = QStyleOptionViewItem()
+        self.initViewItemOption(opt)
+        return opt
+    QAbstractItemView.viewOptions = __QAbstractItemView_viewOptions
+    del __QAbstractItemView_viewOptions
+
 if hasattr(QApplication, "desktop"):
     def QApplication_desktop():
         warn("QApplication.desktop is obsolete and is removed in Qt6",
