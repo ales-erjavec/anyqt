@@ -1,3 +1,5 @@
+from warnings import warn
+
 from . import _api
 
 # Names imported from Qt4's QtGui module
@@ -338,7 +340,7 @@ except NameError:
 if not hasattr(QWidget, "screen"):
     def QWidget_screen(self):
         screens = QApplication.screens()
-        desktop = QApplication.desktop()
+        desktop = __QApplication_desktop()  # avoid deprecation warning
         screen_num = desktop.screenNumber(self)
         if 0 <= screen_num < len(screens):
             return screens[screen_num]
@@ -346,3 +348,12 @@ if not hasattr(QWidget, "screen"):
             return QApplication.primaryScreen()
     QWidget.screen = QWidget_screen
     del QWidget_screen
+
+if hasattr(QApplication, "desktop"):
+    def QApplication_desktop():
+        warn("QApplication.desktop is obsolete and is removed in Qt6",
+             DeprecationWarning, stacklevel=2)
+        return __QApplication_desktop()
+    __QApplication_desktop = QApplication.desktop
+    QApplication.desktop = staticmethod(QApplication_desktop)
+    del QApplication_desktop
