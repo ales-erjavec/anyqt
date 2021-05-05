@@ -349,6 +349,14 @@ if not hasattr(QWidget, "screen"):
     QWidget.screen = QWidget_screen
     del QWidget_screen
 
+if hasattr(QWidget, "getContentsMargins"):
+    def QWidget_getContentsMargins(self):
+        warn("QWidget.getContentsMargins is obsolete and is removed in Qt6",
+             DeprecationWarning, stacklevel=2)
+        return __QWidget_getContentsMargins(self)
+    __QWidget_getContentsMargins = QWidget.getContentsMargins
+    QWidget.getContentsMargins = QWidget_getContentsMargins
+
 if hasattr(QApplication, "desktop"):
     def QApplication_desktop():
         warn("QApplication.desktop is obsolete and is removed in Qt6",
