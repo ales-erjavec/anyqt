@@ -138,6 +138,19 @@ __Qt4_QtGui = [
 
 if _api.USED_API == _api.QT_API_PYQT6:
     from PyQt6.QtGui import *
+    if not hasattr(QMouseEvent, "pos"):
+        QMouseEvent.pos = lambda self: self.position().toPoint()
+    if not hasattr(QMouseEvent, "globalPos"):
+        QMouseEvent.globalPos = lambda self: self.globalPosition().toPoint()
+    if not hasattr(QMouseEvent, "x"):
+        QMouseEvent.x = lambda self: self.position().x()
+    if not hasattr(QMouseEvent, "y"):
+        QMouseEvent.y = lambda self: self.position().y()
+    if not hasattr(QMouseEvent, "globalX"):
+        QMouseEvent.globalX = lambda self: self.globalPosition().x()
+    if not hasattr(QMouseEvent, "globalY"):
+        QMouseEvent.globalY = lambda self: self.globalPosition().y()
+
 elif _api.USED_API == _api.QT_API_PYQT5:
     from PyQt5.QtGui import *
     from PyQt5.QtWidgets import QUndoCommand, QUndoStack, QUndoGroup
