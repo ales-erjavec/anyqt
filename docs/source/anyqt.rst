@@ -442,6 +442,12 @@ Export a Qt5 compatible QtWidgets module
 
   .. note:: A subclass of the real QGroupBox is used.
 
+* :class:`QComboBox` imported from this module has `textActivated` and
+  `textHighlighted` signals defined even when not present in Qt < 5.14.
+  Use these instead of `activated[int]` and `highlighted[int]` overloads
+  for compatibility with Qt6 where they are removed.
+
+  .. note:: A subclass of the real QComboBox is used.
 
 :mod:`AnyQt.QtMultimedia`
 -------------------------

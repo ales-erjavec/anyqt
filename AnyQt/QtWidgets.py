@@ -411,5 +411,28 @@ if not hasattr(QButtonGroup, "idClicked"):
         def __button_toggled(self, button, checked):
             self.idToggled.emit(self.id(button), checked)
 
+if not hasattr(QComboBox, "textActivated"):
+    class QComboBox(QComboBox):
+        textActivated = Signal(str)
+        textHighlighted = Signal(str)
+
+        def __init__(self, *args, **kwargs):
+            activated = kwargs.pop("activated", None)
+            highlighted = kwargs.pop("highlighted", None)
+            super().__init__(*args, **kwargs)
+            self.activated[int].connect(self.__activated)
+            self.highlighted[int].connect(self.__highlighted)
+            if activated is not None:
+                self.activated.connect(activated)
+            if highlighted is not None:
+                self.highlighted.connect(highlighted)
+
+        @Slot(int)
+        def __activated(self, index):
+            self.textActivated.emit(self.itemText(index))
+
+        @Slot(int)
+        def __highlighted(self, index):
+            self.textHighlighted.emit(self.itemText(index))
 
 del Signal, Slot
