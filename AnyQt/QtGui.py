@@ -182,6 +182,29 @@ if _api.USED_API == _api.QT_API_PYQT6:
     if not hasattr(QDropEvent, "keyboardModifiers"):
         QDropEvent.keyboardModifiers = lambda self: self.modifiers()
 
+    # Deprecated QWheelEvent accessors
+    if not hasattr(QWheelEvent, "pos"):
+        QWheelEvent.pos = lambda self: self.position().toPoint()
+    if not hasattr(QWheelEvent, "posF"):
+        QWheelEvent.posF = lambda self: self.position()
+    if not hasattr(QWheelEvent, "globalPos"):
+        QWheelEvent.globalPos = lambda self: self.globalPosition().toPoint()
+    if not hasattr(QWheelEvent, "globalPosF"):
+        QWheelEvent.globalPosF = lambda self: self.globalPosition()
+    if not hasattr(QWheelEvent, "x"):
+        QWheelEvent.x = lambda self: self.position().x()
+    if not hasattr(QWheelEvent, "y"):
+        QWheelEvent.y = lambda self: self.position().y()
+    if not hasattr(QWheelEvent, "globalX"):
+        QWheelEvent.globalX = lambda self: self.globalPosition().x()
+    if not hasattr(QWheelEvent, "globalY"):
+        QWheelEvent.globalY = lambda self: self.globalPosition().y()
+    if not hasattr(QWheelEvent, "mouseButtons"):
+        QWheelEvent.mouseButtons = lambda self: self.buttons()
+    if not hasattr(QWheelEvent, "keyboardModifiers"):
+        QWheelEvent.keyboardModifiers = lambda self: self.modifiers()
+
+
 elif _api.USED_API == _api.QT_API_PYQT5:
     from PyQt5.QtGui import *
     from PyQt5.QtWidgets import QUndoCommand, QUndoStack, QUndoGroup
