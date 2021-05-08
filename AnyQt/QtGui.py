@@ -138,6 +138,27 @@ __Qt4_QtGui = [
 
 if _api.USED_API == _api.QT_API_PYQT6:
     from PyQt6.QtGui import *
+    # Deprecated QEnterEvent accessors
+    if not hasattr(QEnterEvent, "pos"):
+        QEnterEvent.pos = lambda self: self.position().toPoint()
+    if not hasattr(QEnterEvent, "globalPos"):
+        QEnterEvent.globalPos = lambda self: self.globalPosition().toPoint()
+    if not hasattr(QEnterEvent, "x"):
+        QEnterEvent.x = lambda self: self.position().toPoint().x()
+    if not hasattr(QEnterEvent, "y"):
+        QEnterEvent.y = lambda self: self.position().toPoint().y()
+    if not hasattr(QEnterEvent, "globalX"):
+        QEnterEvent.globalX = lambda self: self.globalPosition().toPoint().x()
+    if not hasattr(QEnterEvent, "globalY"):
+        QEnterEvent.globalY = lambda self: self.globalPosition().toPoint().y()
+    if not hasattr(QEnterEvent, "localPos"):
+        QEnterEvent.localPos = lambda self: self.position()
+    if not hasattr(QEnterEvent, "windowPos"):
+        QEnterEvent.windowPos = lambda self: self.scenePosition()
+    if not hasattr(QEnterEvent, "screenPos"):
+        QEnterEvent.screenPos = lambda self: self.globalPosition()
+
+    # Deprecated QMouseEvent accessors
     if not hasattr(QMouseEvent, "pos"):
         QMouseEvent.pos = lambda self: self.position().toPoint()
     if not hasattr(QMouseEvent, "globalPos"):
@@ -150,6 +171,16 @@ if _api.USED_API == _api.QT_API_PYQT6:
         QMouseEvent.globalX = lambda self: self.globalPosition().x()
     if not hasattr(QMouseEvent, "globalY"):
         QMouseEvent.globalY = lambda self: self.globalPosition().y()
+
+    # Deprecated QDropEvent accessors
+    if not hasattr(QDropEvent, "pos"):
+        QDropEvent.pos = lambda self: self.position().toPoint()
+    if not hasattr(QDropEvent, "posF"):
+        QDropEvent.posF = lambda self: self.position()
+    if not hasattr(QDropEvent, "mouseButtons"):
+        QDropEvent.mouseButtons = lambda self: self.buttons()
+    if not hasattr(QDropEvent, "keyboardModifiers"):
+        QDropEvent.keyboardModifiers = lambda self: self.modifiers()
 
 elif _api.USED_API == _api.QT_API_PYQT5:
     from PyQt5.QtGui import *
