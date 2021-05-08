@@ -357,6 +357,15 @@ if hasattr(QWidget, "getContentsMargins"):
     __QWidget_getContentsMargins = QWidget.getContentsMargins
     QWidget.getContentsMargins = QWidget_getContentsMargins
 
+if hasattr(QLineEdit, "getTextMargins"):
+    def __QLineEdit_getTextMargins(self):
+        warn("QLineEdit.getTextMargins is deprecated and will be removed.",
+             DeprecationWarning, stacklevel=2)
+        m = self.textMargins()
+        return m.left(), m.top(), m.right(), m.bottom()
+    QLineEdit.getTextMargins = __QLineEdit_getTextMargins
+    del __QLineEdit_getTextMargins
+
 if hasattr(QApplication, "desktop"):
     def QApplication_desktop():
         warn("QApplication.desktop is obsolete and is removed in Qt6",
