@@ -431,7 +431,16 @@ Export a Qt5 compatible QtWidgets module
 * A forward compatile :func:`QWidget.grab` method is made available when
   using a Qt4 backend
 
-* A QWidget.screen method is made available when not present in Qt5 (<5.14).
+* A :func:`QWidget.screen` method is made available when not present in
+  Qt5 (<5.14).
+
+* :class:`QButtonGroup` imported from this module has `idClicked`, `idPressed`,
+  `idReleased` and `idToggled` signals defined even when not present in
+  Qt < 5.15. Use these instead of `clicked[int]`, `pressed[int]` and
+  `toggled[int]` overloads for compatibility with Qt6 where they are
+  removed.
+
+  .. note:: A subclass of the real QGroupBox is used.
 
 
 :mod:`AnyQt.QtMultimedia`

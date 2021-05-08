@@ -365,3 +365,51 @@ if hasattr(QApplication, "desktop"):
     __QApplication_desktop = QApplication.desktop
     QApplication.desktop = staticmethod(QApplication_desktop)
     del QApplication_desktop
+
+
+from AnyQt.QtCore import Signal, Slot
+
+if not hasattr(QButtonGroup, "idClicked"):
+    class QButtonGroup(QButtonGroup):
+        idClicked = Signal(int)
+        idPressed = Signal(int)
+        idReleased = Signal(int)
+        idToggled = Signal(int, bool)
+
+        def __init__(self, *args, **kwargs):
+            buttonClicked = kwargs.pop("buttonClicked", None)
+            buttonPressed = kwargs.pop("buttonPressed", None)
+            buttonReleased = kwargs.pop("buttonReleased", None)
+            buttonToggled = kwargs.pop("buttonToggled", None)
+            super().__init__(*args, **kwargs)
+            self.buttonClicked.connect(self.__button_clicked)
+            self.buttonPressed.connect(self.__button_pressed)
+            self.buttonReleased.connect(self.__button_released)
+            self.buttonToggled.connect(self.__button_toggled)
+            if buttonClicked is not None:
+                self.buttonClicked.connect(buttonClicked)
+            if buttonPressed is not None:
+                self.buttonPressed.connect(buttonPressed)
+            if buttonReleased is not None:
+                self.buttonReleased.connect(buttonReleased)
+            if buttonToggled is not None:
+                self.buttonToggled.connect(buttonToggled)
+
+        @Slot(QAbstractButton)
+        def __button_clicked(self, button):
+            self.idClicked.emit(self.id(button))
+
+        @Slot(QAbstractButton)
+        def __button_pressed(self, button):
+            self.idPressed.emit(self.id(button))
+
+        @Slot(QAbstractButton)
+        def __button_released(self, button):
+            self.idReleased.emit(self.id(button))
+
+        @Slot(QAbstractButton, bool)
+        def __button_toggled(self, button, checked):
+            self.idToggled.emit(self.id(button), checked)
+
+
+del Signal, Slot
