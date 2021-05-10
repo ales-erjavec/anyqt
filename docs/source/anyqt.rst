@@ -41,6 +41,14 @@ Export a Qt5 compatible QtCore module.
     QUrl in Qt5 has a different interface (some functionality was split into
     QUrlParse). No attempt is made to taper over the differences.
 
+* :class:`QSignalMapper` imported from this module has `mappedInt`,
+  `mappedString`, `mappedObject` and `mappedWidget` signals defined even
+  when not present in Qt < 5.15. Use these instead of deprecated `mapped`
+  overloads for forward compatibility with Qt6
+
+  .. note:: A subclass of the real QSignalMapper is used.
+
+
 Use `AnyQt.QtCore.QT_VERSION` to check if a feature is present.
 
 

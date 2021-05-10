@@ -245,6 +245,13 @@ __PyQt4_QtCore_missing_in_Qt5 = [
 
 if _api.USED_API == _api.QT_API_PYQT5:
     from PyQt5.QtCore import *
+    try:
+        # QSignalMapper.mapped[QWidget] does not work unless QtWidgets is
+        # imported before QSignalMapper is touched (even hasattr(QSM, "aa"))
+        # will cause QSignalMapper.mapped[QWidget] to fail with KeyError.
+        import PyQt5.QtWidgets
+    except ImportError:
+        pass
     Signal = pyqtSignal
     Slot = pyqtSlot
     Property = pyqtProperty
@@ -323,6 +330,24 @@ if not hasattr(QEvent, "NonClientAreaMouseButtonRelease"):
 
 if not hasattr(QEvent, "NonClientAreaMouseMove"):
     QEvent.NonClientAreaMouseMove = QEvent.Type(173)
+
+
+if not hasattr(QSignalMapper, "mappedInt"):  # Qt < 5.15
+    class QSignalMapper(QSignalMapper):
+        mappedInt = Signal(int)
+        mappedString = Signal(str)
+        mappedObject = Signal("QObject*")
+        mappedWidget = Signal("QWidget*")
+
+        def __init__(self, *args, **kwargs):
+            super().__init__(*args, **kwargs)
+            self.mapped[int].connect(self.mappedInt)
+            self.mapped[str].connect(self.mappedString)
+            self.mapped["QObject*"].connect(self.mappedObject)
+            try:
+                self.mapped["QWidget*"].connect(self.mappedWidget)
+            except (KeyError, TypeError):
+                pass
 
 #: Qt version as a (major, minor, micro) tuple
 QT_VERSION_INFO = tuple(map(int, qVersion().split(".")[:3]))
