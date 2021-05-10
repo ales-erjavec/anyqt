@@ -1,5 +1,5 @@
 from warnings import warn
-
+from .QtCore import QT_VERSION_INFO as __QT_VERSION_INFO
 from . import _api
 
 # Names imported from Qt4's QtGui module
@@ -279,3 +279,28 @@ def QFontMetrics_width(self, *args, **kwargs):
 QFontMetricsF.width = QFontMetrics_width
 QFontMetrics.width = QFontMetrics_width
 del QFontMetrics_width
+
+if __QT_VERSION_INFO < (6, 0):
+    class QFontDatabase(QFontDatabase):
+        def staticwrapper(f):
+            from functools import wraps
+            @wraps(f)
+            def wrapped(*args, **kwargs):
+                return f(QFontDatabase(), *args, **kwargs)
+            return staticmethod(wrapped)
+        bold = staticwrapper(QFontDatabase.bold)
+        families = staticwrapper(QFontDatabase.families)
+        font = staticwrapper(QFontDatabase.font)
+        isBitmapScalable = staticwrapper(QFontDatabase.isBitmapScalable)
+        isFixedPitch = staticwrapper(QFontDatabase.isFixedPitch)
+        isPrivateFamily = staticwrapper(QFontDatabase.isPrivateFamily)
+        isScalable = staticwrapper(QFontDatabase.isScalable)
+        isSmoothlyScalable = staticwrapper(QFontDatabase.isSmoothlyScalable)
+        italic = staticwrapper(QFontDatabase.italic)
+        pointSizes = staticwrapper(QFontDatabase.pointSizes)
+        smoothSizes = staticwrapper(QFontDatabase.smoothSizes)
+        styleString = staticwrapper(QFontDatabase.styleString)
+        styles = staticwrapper(QFontDatabase.styles)
+        weight = staticwrapper(QFontDatabase.weight)
+        writingSystems = staticwrapper(QFontDatabase.writingSystems)
+        del staticwrapper

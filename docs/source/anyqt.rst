@@ -201,6 +201,8 @@ Export a Qt5 compatible QtGui module.
 
 * An missing QPdfWriter.setPageSize(QPageSize) overload for PyQt5 is added.
 
+* All members of :class:`QFontDatabase` can be called as static methods the
+  same way as in Qt 6.
 
 :mod:`AnyQt.QtWidgets`
 ----------------------
