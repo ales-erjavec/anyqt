@@ -375,6 +375,15 @@ if not hasattr(QSignalMapper, "mappedInt"):  # Qt < 5.15
             except (KeyError, TypeError):
                 pass
 
+if not hasattr(QLibraryInfo, "path"):
+    QLibraryInfo.path = QLibraryInfo.location
+
+if not hasattr(QLibraryInfo, "LibraryLocation"):
+    QLibraryInfo.LibraryLocation = QLibraryInfo.LibraryPath
+
+if not hasattr(QLibraryInfo, "location"):
+    QLibraryInfo.location = QLibraryInfo.path
+
 #: Qt version as a (major, minor, micro) tuple
 QT_VERSION_INFO = tuple(map(int, qVersion().split(".")[:3]))
 

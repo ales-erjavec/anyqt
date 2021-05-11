@@ -49,6 +49,10 @@ Export a Qt5 compatible QtCore module.
   .. note:: A subclass of the real QSignalMapper is used.
 
 
+* A forward compatible :func:`QLibraryInfo.path` is available (new in Qt6
+  replaces :func:`QLibrartInfo.location`)
+
+
 Use `AnyQt.QtCore.QT_VERSION` to check if a feature is present.
 
 
