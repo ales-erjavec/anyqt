@@ -1,3 +1,4 @@
+import os
 import enum
 import warnings
 from typing import Type, Dict, Any
@@ -51,6 +52,62 @@ def fix_pyqt5_QGraphicsItem_itemChange():
                       RuntimeWarning)
 
 
+def fix_pyqt6_qtgui_qaction_menu(namespace):
+    if namespace.get("__name__") != "AnyQt.QtGui":
+        return
+    import ctypes
+    from ._ctypes import load_qtlib
+    qtgui = load_qtlib("QtGui")
+    if os.name == "posix":  # assuming gcc compatible compiler
+        _QAction_setMenuObject = qtgui['_ZN7QAction13setMenuObjectEP7QObject']
+        _QAction_menuObject = qtgui['_ZNK7QAction10menuObjectEv']
+    elif os.name == "nt":
+        _QAction_setMenuObject = qtgui['?setMenuObject@QAction@@AEAAXPEAVQObject@@@Z']
+        _QAction_menuObject = qtgui['?menuObject@QAction@@AEBAPEAVQObject@@XZ']
+    else:
+        return
+
+    _QAction_menuObject.argtypes = [ctypes.c_void_p]
+    _QAction_menuObject.restype = ctypes.c_void_p
+
+    _QAction_setMenuObject.argtypes = [ctypes.c_void_p, ctypes.c_void_p]
+
+    from PyQt6.QtGui import QAction
+    from PyQt6.sip import isdeleted, unwrapinstance, wrapinstance
+    try:
+        from PyQt6.QtWidgets import QMenu
+    except ImportError:
+        return  # No QtWidgets then no setMenu
+
+    if hasattr(QAction, "setMenu"):
+        return
+
+    def QAction_setMenu(self, menu):
+        if menu is not None and not isinstance(menu, QMenu):
+            raise TypeError()
+        if menu is not None and isdeleted(menu):
+            raise RuntimeError()
+        if isdeleted(self):
+            raise RuntimeError()
+        self.__QAction_menu = menu
+        _QAction_setMenuObject(
+            unwrapinstance(self),
+            unwrapinstance(menu) if menu is not None else 0
+        )
+
+    def QAction_menu(self):
+        if isdeleted(self):
+            raise RuntimeError()
+        ptr = _QAction_menuObject(unwrapinstance(self))
+        if ptr is None:
+            return None
+        menu = wrapinstance(ptr, QMenu)
+        return menu
+
+    QAction.setMenu = QAction_setMenu
+    QAction.menu = QAction_menu
+
+
 def fix_pyqt6_unscoped_enum(namespace: Dict[str, Any]):
     """
     Lift all PyQt6 enum members up to class level.
@@ -82,7 +139,10 @@ def fix_pyqt6_unscoped_enum(namespace: Dict[str, Any]):
 
 
 GLOBAL_FIXES = {
-    "pyqt6": [fix_pyqt6_unscoped_enum],
+    "pyqt6": [
+        fix_pyqt6_unscoped_enum,
+        fix_pyqt6_qtgui_qaction_menu,
+    ]
 }
 
 

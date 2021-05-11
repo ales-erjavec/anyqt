@@ -208,6 +208,10 @@ Export a Qt5 compatible QtGui module.
 * All members of :class:`QFontDatabase` can be called as static methods the
   same way as in Qt 6.
 
+* :class:`QAction` has ctypes based :func:`menu()` and  :func:`setMenu()`
+  members if/when not present in PyQt6
+
+
 :mod:`AnyQt.QtWidgets`
 ----------------------
 
