@@ -248,6 +248,7 @@ if _api.USED_API == _api.QT_API_PYQT6:
     Signal = pyqtSignal
     Slot = pyqtSlot
     Property = pyqtProperty
+    BoundSignal = pyqtBoundSignal
     Qt.Alignment = Qt.AlignmentFlag
     Qt.ApplicationStates = Qt.ApplicationState
     Qt.DockWidgetAreas = Qt.DockWidgetArea
@@ -281,6 +282,7 @@ elif _api.USED_API == _api.QT_API_PYQT5:
     Signal = pyqtSignal
     Slot = pyqtSlot
     Property = pyqtProperty
+    BoundSignal = pyqtBoundSignal
 
 elif _api.USED_API == _api.QT_API_PYQT4:
     from PyQt4 import QtCore as _QtCore, QtGui as _QtGui
@@ -337,6 +339,7 @@ elif _api.USED_API == _api.QT_API_PYSIDE2:
     _major, _minor, _micro = tuple(map(int, qVersion().split(".")[:3]))
     QT_VERSION = (_major << 16) + (_minor << 8) + _micro
     QT_VERSION_STR = "{}.{}.{}".format(_major, _minor, _micro)
+    BoundSignal = Signal
 
 # Missing in PyQt4 <= 4.11.3
 if not hasattr(QEvent, "MacSizeChange"):
