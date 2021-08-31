@@ -138,10 +138,46 @@ def fix_pyqt6_unscoped_enum(namespace: Dict[str, Any]):
                         lift_enum_namespace(class_, value)
 
 
+def fix_pyqt5_missing_enum_members(namespace: Dict[str, Any]):
+    import enum
+    from AnyQt import sip
+
+    def is_pyqt_enum_type(value):
+        return (isinstance(value, type)
+                and issubclass(value, int)
+                and value is not int
+                and "." in value.__qualname__
+                and not issubclass(value, enum.Enum))
+
+    for _, class_ in list(namespace.items()):
+        if isinstance(class_, (sip.simplewrapper, sip.wrappertype)):
+            enum_types = {}
+            for name, value in list(class_.__dict__.items()):
+                if is_pyqt_enum_type(value):
+                    enum_types[value.__qualname__] = value
+            types_ = tuple(enum_types.values())
+            for name, value in list(class_.__dict__.items()):
+                if type(value) in types_:
+                    type_ = enum_types[type(value).__qualname__]
+                    if hasattr(type_, name) and (
+                            getattr(type_, name) != value and
+                            type_.__qualname__ != "QKeySequence.StandardKey"
+                    ):
+                        warnings.warn(
+                            f"{type_} {name} is already present and is not "
+                            f"{value}", RuntimeWarning
+                        )
+                    elif not hasattr(type_, name):
+                        setattr(type_, name, value)
+
+
 GLOBAL_FIXES = {
     "pyqt6": [
         fix_pyqt6_unscoped_enum,
         fix_pyqt6_qtgui_qaction_menu,
+    ],
+    "pyqt5": [
+        fix_pyqt5_missing_enum_members
     ]
 }
 
