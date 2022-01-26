@@ -1,12 +1,18 @@
 import sys
 import warnings
+import importlib.util
+from importlib.abc import MetaPathFinder, Loader
 
 from ._api import (
     USED_API, QT_API_PYQT4, QT_API_PYQT5, QT_API_PYSIDE
 )
 
 
-class ImportHookBackport(object):
+class _FinderLoader(MetaPathFinder, Loader):
+    pass
+
+
+class ImportHookBackport(_FinderLoader):
     """
     A python import hook (PEP-302) substituting Qt4 module imports, replacing
     them with a back compatible shim.
@@ -14,24 +20,20 @@ class ImportHookBackport(object):
     def __init__(self, whichapi):
         self.whichapi = whichapi
 
-    def find_module(self, name, path=None):
+    def find_spec(self, fullname, path=None, target=None):
         if USED_API != QT_API_PYQT5:
             return
 
-        toplevel = name.split(".", 1)[0]
+        toplevel = fullname.split(".", 1)[0]
         if toplevel == "PyQt4" and self.whichapi == QT_API_PYQT4:
-            return self
+            return importlib.util.spec_from_loader(fullname, self)
         elif toplevel == "PySide" and self.whichapi == QT_API_PYSIDE:
-            return self
+            return importlib.util.spec_from_loader(fullname, self)
         else:
             return
 
-    def load_module(self, fullname):
-        if fullname in sys.modules:
-            # don't reload
-            return sys.modules[fullname]
-
-        pkgpath = fullname.split(".")
+    def create_module(self, spec):
+        pkgpath = spec.name.split(".")
         toplevel = pkgpath[0]
         subpkg = pkgpath[1] if len(pkgpath) > 1 else None
 
@@ -42,14 +44,16 @@ class ImportHookBackport(object):
         module = __import__(backportpkg, fromlist=["_"])
         warnings.warn(
             "Loaded module {} as a substitute for {}"
-            .format(module.__name__, fullname),
+                .format(module.__name__, spec.name),
             RuntimeWarning, stacklevel=2,
         )
-        sys.modules[fullname] = module
+        return module
+
+    def exec_module(self, module):
         return module
 
 
-class ImportHookDeny(object):
+class ImportHookDeny(_FinderLoader):
     """
     A python import hook (PEP-302) preventing imports of a Qt api.
 
@@ -61,21 +65,20 @@ class ImportHookDeny(object):
     def __init__(self, whichapi):
         self.whichapi = whichapi
 
-    def find_module(self, name, path=None):
-        toplevel = name.split(".")[0]
-        if self.whichapi == QT_API_PYQT5 and toplevel == "PyQt5":
-            return self
-        elif self.whichapi == QT_API_PYQT4 and toplevel == "PyQt4":
-            return self
-        elif self.whichapi == QT_API_PYSIDE and toplevel == "PySide":
-            return self
+    def find_spec(self, fullname, path=None, target=None):
+        toplevel = fullname.split(".")[0]
+        if self.whichapi == QT_API_PYQT5 and toplevel == "PyQt5" or \
+                self.whichapi == QT_API_PYQT4 and toplevel == "PyQt4" or \
+                self.whichapi == QT_API_PYSIDE and toplevel == "PySide":
+            return importlib.util.spec_from_loader(fullname, self)
         else:
             return None
 
-    def load_module(self, fullname):
-        raise ImportError(
-            "Import of {} is denied.".format(fullname)
-        )
+    def create_module(self, spec):
+        raise ImportError("Import of {} is denied.".format(spec.name))
+
+    def exec_module(self, module) -> None:
+        raise ImportError
 
 
 def install_backport_hook(api):

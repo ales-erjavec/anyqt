@@ -44,7 +44,7 @@ jobs:
 
           - os: ubuntu-20.04
             python-version: "3.10"
-            test-env: "PyQt6~=6.2.3"
+            test-env: "PyQt6~=6.2.3 PyQt6-Qt6~=6.2.3"
             qt-api: "PyQt6"
 
           # macOS
@@ -70,7 +70,7 @@ jobs:
 
           - os: macos-11
             python-version: "3.10"
-            test-env: "PyQt6~=6.2.3"
+            test-env: "PyQt6~=6.2.3 PyQt6-Qt6~=6.2.3"
 
           # Windows
           - os: windows-2019
@@ -95,7 +95,7 @@ jobs:
 
           - os: windows-2019
             python-version: "3.10"
-            test-env: "PyQt6~=6.2.3"
+            test-env: "PyQt6~=6.2.3 PyQt6-Qt6~=6.2.3"
 
     steps:
       - uses: actions/checkout@v2
@@ -139,6 +139,11 @@ jobs:
         env:
           XVFBARGS: "-screen 0 1280x1024x24"
         run: catchsegv xvfb-run -a -s "$XVFBARGS" pytest -v --cov=AnyQt
+
+      - name: Test import hooks
+        if: ${{ startsWith(runner.os, 'Linux') &&  matrix.qt-api == 'PyQt5' }}
+        run: |
+          ANYQT_HOOK_BACKPORT=PyQt4 python -c "import AnyQt.QtCore, PyQt4"
 
       - name: Upload Coverage
         run: codecov
