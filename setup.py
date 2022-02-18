@@ -9,7 +9,7 @@ VERSION = "0.0.14"
 AUTHOR = "Aleš Erjavec"
 AUTHOR_EMAIL = "ales.erjavec@fri.uni-lj.si"
 URL = "https://github.com/ales-erjavec/anyqt"
-PACKAGES = find_packages(".")
+PACKAGES = find_packages(".", include="AnyQt*")
 
 DESCRIPTION = "PyQt4/PyQt5 compatibility layer."
 
