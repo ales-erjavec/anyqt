@@ -452,6 +452,10 @@ Export a Qt5 compatible QtWidgets module
 * A backward compatible :func:`QAbstractItemView.viewOptions` method is made
   available when using a Qt6 backend.
 
+* A forward compatible :func:`QAbstractItemView.itemDelegateForIndex` method
+  is made available (new in Qt 6.0). Use this instead of deprecated
+  :func:`QAbstractItemView.itemDelegate(QModelIndex)` overload.
+
 * A :func:`QWidget.screen` method is made available when not present in
   Qt5 (<5.14).
 

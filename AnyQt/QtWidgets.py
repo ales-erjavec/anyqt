@@ -398,6 +398,24 @@ elif not hasattr(QAbstractItemView, "initViewItemOption"):
     QAbstractItemView.initViewItemOption = __QAbstractItemView_initViewItemOption
     del __QAbstractItemView_initViewItemOption
 
+from AnyQt.QtCore import QModelIndex as __QModelIndex
+
+
+def __QAbstractItemView_itemDelegate(self, *args):
+    if args and isinstance(args[0], __QModelIndex):
+        return self.itemDelegateForIndex(*args)
+    return __QAbstractItemView_itemDelegate_orig(self, *args)
+
+
+if not hasattr(QAbstractItemView, "itemDelegateForIndex"):
+    def __QAbstractItemView_itemDelegateForIndex(self, index):
+        return __QAbstractItemView_itemDelegate_orig(self, index)
+    QAbstractItemView.itemDelegateForIndex = __QAbstractItemView_itemDelegateForIndex
+
+__QAbstractItemView_itemDelegate_orig = QAbstractItemView.itemDelegate
+QAbstractItemView.itemDelegate = __QAbstractItemView_itemDelegate
+
+
 if hasattr(QApplication, "desktop"):
     def QApplication_desktop():
         warn("QApplication.desktop is obsolete and is removed in Qt6",
