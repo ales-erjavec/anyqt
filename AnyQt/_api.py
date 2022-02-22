@@ -15,10 +15,19 @@ else:
 
 USED_API = None
 
+QT_API_PYQT6 = "pyqt6"
 QT_API_PYQT5 = "pyqt5"
 QT_API_PYQT4 = "pyqt4"
-QT_API_PYSIDE = "pyside"
+
+QT_API_PYSIDE6 = "pyside6"
 QT_API_PYSIDE2 = "pyside2"
+QT_API_PYSIDE = "pyside"
+
+ALL_APIS = [
+    QT_API_PYQT6, QT_API_PYQT5, QT_API_PYQT4,
+    QT_API_PYSIDE6, QT_API_PYSIDE2, QT_API_PYSIDE
+]
+
 
 def comittoapi(api):
     """
@@ -29,8 +38,8 @@ def comittoapi(api):
     """
     global USED_API
     assert USED_API is None, "committoapi called again!"
-    check = ["PyQt4", "PyQt5", "PySide", "PySide2"]
-    assert api in [QT_API_PYQT5, QT_API_PYQT4, QT_API_PYSIDE, QT_API_PYSIDE2]
+    check = ["PyQt4", "PyQt5", "PyQt6", "PySide", "PySide2", "PySide6"]
+    assert api in ALL_APIS
     for name in check:
         if name.lower() != api and name in sys.modules:
             raise RuntimeError(
@@ -43,6 +52,7 @@ def comittoapi(api):
         AnyQt.__SELECTED_API = api
         AnyQt.USED_API = api
 
+
 if AnyQt.__SELECTED_API is not None:
     comittoapi(AnyQt.__SELECTED_API)
 elif "QT_API" in os.environ:
@@ -51,7 +61,7 @@ elif "QT_API" in os.environ:
         # Qt.py allows both pyqt4 and pyqt to specify PyQt4.
         # When run from anaconda-navigator, pyqt is used.
         api = "pyqt4"
-    if api in [QT_API_PYQT4, QT_API_PYQT5, QT_API_PYSIDE, QT_API_PYSIDE2]:
+    if api in ALL_APIS:
         comittoapi(api)
     else:
         warnings.warn(
@@ -63,10 +73,14 @@ elif "QT_API" in os.environ:
 if USED_API is None:
     # Check sys.modules for existing imports
     __existing = None
-    if "PyQt5" in sys.modules:
+    if "PyQt6" in sys.modules:
+        __existing = QT_API_PYQT6
+    elif "PyQt5" in sys.modules:
         __existing = QT_API_PYQT5
     elif "PyQt4" in sys.modules:
         __existing = QT_API_PYQT4
+    elif "PySide6" in sys.modules:
+        __existing = QT_API_PYSIDE6
     elif "PySide2" in sys.modules:
         __existing = QT_API_PYSIDE2
     elif "PySide" in sys.modules:
@@ -89,6 +103,8 @@ if USED_API is None:
             __available = QT_API_PYSIDE
         elif "PySide2" in available:
             __available = QT_API_PYSIDE2
+        elif "PyQt6" in available:
+            __available = QT_API_PYQT6
 
         if __available is not None:
             comittoapi(__available)
@@ -113,3 +129,6 @@ if "ANYQT_HOOK_BACKPORT" in os.environ:
         if __backportapi.lower() != USED_API:
             install_backport_hook(__backportapi.lower())
     del install_backport_hook
+
+
+from ._fixes import global_fixes as apply_global_fixes

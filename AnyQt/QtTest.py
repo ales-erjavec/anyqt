@@ -1,6 +1,8 @@
 from . import _api
 
-if _api.USED_API == _api.QT_API_PYQT5:
+if _api.USED_API == _api.QT_API_PYQT6:
+    from PyQt6.QtTest import *
+elif _api.USED_API == _api.QT_API_PYQT5:
     from PyQt5.QtTest import *
 elif _api.USED_API == _api.QT_API_PYQT4:
     from PyQt4.QtTest import *
@@ -150,3 +152,5 @@ def _QTest_qWaitFor(predicate, timeout=5000):
 
 if not hasattr(QTest, "qWaitFor"):  # Qt < 5.10
     QTest.qWaitFor = _QTest_qWaitFor
+
+_api.apply_global_fixes(globals())

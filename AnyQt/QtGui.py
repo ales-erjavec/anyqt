@@ -136,7 +136,9 @@ __Qt4_QtGui = [
     'qRgba'
 ]
 
-if _api.USED_API == _api.QT_API_PYQT5:
+if _api.USED_API == _api.QT_API_PYQT6:
+    from PyQt6.QtGui import *
+elif _api.USED_API == _api.QT_API_PYQT5:
     from PyQt5.QtGui import *
     from PyQt5.QtCore import PYQT_VERSION as _PYQT_VERSION
 
@@ -304,3 +306,6 @@ if __QT_VERSION_INFO < (6, 0):
         weight = staticwrapper(QFontDatabase.weight)
         writingSystems = staticwrapper(QFontDatabase.writingSystems)
         del staticwrapper
+
+
+_api.apply_global_fixes(globals())

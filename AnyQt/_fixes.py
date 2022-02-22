@@ -1,4 +1,6 @@
+import enum
 import warnings
+from typing import Type, Dict, Any
 
 
 def fix_pyqt5_QGraphicsItem_itemChange():
@@ -47,3 +49,45 @@ def fix_pyqt5_QGraphicsItem_itemChange():
         QGraphicsItem.itemChange = QGraphicsItem_itemChange
         warnings.warn("Monkey patching QGraphicsItem.itemChange",
                       RuntimeWarning)
+
+
+def fix_pyqt6_unscoped_enum(namespace: Dict[str, Any]):
+    """
+    Lift all PyQt6 enum members up to class level.
+    i.e. Qt.ItemFlags.DisplayRole -> Qt.DisplayRole
+    """
+    from PyQt6 import sip
+
+    def members(enum: Type[enum.Enum]):
+        return ((name, enum[name]) for name in enum.__members__)
+
+    def lift_enum_namespace(type_, enum: Type[enum.Enum]):
+        for name, value in members(enum):
+            setattr(type_, name, value)
+
+    def is_unscoped_enum(value):
+        return isinstance(value, type) and issubclass(value, enum.Enum)
+
+    def can_lift(type_, enum: Type[enum.Enum]):
+        namespace = type_.__dict__
+        return not any(name in namespace and namespace[name] is not value
+                       for name, value in members(enum))
+
+    for _, class_ in list(namespace.items()):
+        if isinstance(class_, (sip.simplewrapper, sip.wrappertype)):
+            for name, value in list(class_.__dict__.items()):
+                if is_unscoped_enum(value):
+                    if can_lift(class_, value):
+                        lift_enum_namespace(class_, value)
+
+
+GLOBAL_FIXES = {
+    "pyqt6": [fix_pyqt6_unscoped_enum],
+}
+
+
+def global_fixes(namespace):
+    from AnyQt import _api
+    fixes = GLOBAL_FIXES.get(_api.USED_API, [])
+    for fixer in fixes:
+        fixer(namespace)

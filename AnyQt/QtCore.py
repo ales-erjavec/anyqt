@@ -243,7 +243,12 @@ __PyQt4_QtCore_missing_in_Qt5 = [
     'pyqtSignature',
 ]
 
-if _api.USED_API == _api.QT_API_PYQT5:
+if _api.USED_API == _api.QT_API_PYQT6:
+    from PyQt6.QtCore import *
+    Signal = pyqtSignal
+    Slot = pyqtSlot
+    Property = pyqtProperty
+elif _api.USED_API == _api.QT_API_PYQT5:
     from PyQt5.QtCore import *
     try:
         # QSignalMapper.mapped[QWidget] does not work unless QtWidgets is
@@ -351,3 +356,5 @@ if not hasattr(QSignalMapper, "mappedInt"):  # Qt < 5.15
 
 #: Qt version as a (major, minor, micro) tuple
 QT_VERSION_INFO = tuple(map(int, qVersion().split(".")[:3]))
+
+_api.apply_global_fixes(globals())

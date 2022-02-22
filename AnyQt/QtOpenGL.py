@@ -1,6 +1,8 @@
 from . import _api
 
-if _api.USED_API == _api.QT_API_PYQT5:
+if _api.USED_API == _api.QT_API_PYQT6:
+    from PyQt6.QtOpenGL import *
+elif _api.USED_API == _api.QT_API_PYQT5:
     from PyQt5.QtOpenGL import *
 elif _api.USED_API == _api.QT_API_PYQT4:
     from PyQt4.QtOpenGL import *
@@ -9,3 +11,4 @@ elif _api.USED_API == _api.QT_API_PYSIDE:
 elif _api.USED_API == _api.QT_API_PYSIDE2:
     from PySide2.QtOpenGL import *
 
+_api.apply_global_fixes(globals())

@@ -10,7 +10,9 @@ __Qt4_QtWebKit = [
     'QWebView',
 ]
 
-if _api.USED_API == _api.QT_API_PYQT5:
+if _api.USED_API == _api.QT_API_PYQT6:
+    from PyQt6.QtWebKitWidgets import *
+elif _api.USED_API == _api.QT_API_PYQT5:
     from PyQt5.QtWebKitWidgets import *
 elif _api.USED_API == _api.QT_API_PYQT4:
     from PyQt4.QtWebKit import (
@@ -30,3 +32,5 @@ elif _api.USED_API == _api.QT_API_PYSIDE:
         QWebPage,
         QWebView,
     )
+
+_api.apply_global_fixes(globals())

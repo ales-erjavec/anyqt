@@ -11,8 +11,9 @@ __Qt4_QtGui = [
     'QPrinter',
     'QPrinterInfo'
 ]
-
-if _api.USED_API == _api.QT_API_PYQT5:
+if _api.USED_API == _api.QT_API_PYQT6:
+    from PyQt6.QtPrintSupport import *
+elif _api.USED_API == _api.QT_API_PYQT5:
     from PyQt5.QtPrintSupport import *
 elif _api.USED_API == _api.QT_API_PYQT4:
     from PyQt4.QtGui import (
@@ -38,3 +39,5 @@ elif _api.USED_API == _api.QT_API_PYSIDE:
     )
 elif _api.USED_API == _api.QT_API_PYSIDE2:
     from PySide2.QtPrintSupport import *
+
+_api.apply_global_fixes(globals())

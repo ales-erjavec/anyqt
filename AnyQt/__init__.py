@@ -68,5 +68,5 @@ def availableapi():
     """
     Return a list of available Qt interfaces.
     """
-    search = ["PyQt5", "PyQt4", "PySide", "PySide2"]
+    search = ["PyQt5", "PyQt6", "PyQt4", "PySide2", "PySide6", "PySide"]
     return [name for name in search if __islocatable(name)]

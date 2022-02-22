@@ -46,8 +46,9 @@ __Qt4_QtNetwork = [
     'QTcpSocket',
     'QUdpSocket',
 ]
-
-if _api.USED_API == _api.QT_API_PYQT5:
+if _api.USED_API == _api.QT_API_PYQT6:
+    from PyQt6.QtNetwork import *
+elif _api.USED_API == _api.QT_API_PYQT5:
     from PyQt5.QtNetwork import *
 elif _api.USED_API == _api.QT_API_PYQT4:
     from PyQt4.QtNetwork import *
@@ -55,3 +56,5 @@ elif _api.USED_API == _api.QT_API_PYSIDE:
     from PySide.QtNetwork import *
 elif _api.USED_API == _api.QT_API_PYSIDE2:
     from PySide2.QtNetwork import *
+
+_api.apply_global_fixes(globals())
