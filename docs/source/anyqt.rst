@@ -474,6 +474,11 @@ Export a Qt5 compatible QtWidgets module
 
   .. note:: A subclass of the real QComboBox is used.
 
+* :func:`QTextEdit.setTabStopDistance`, `QTextEdit.tabStopDistance`
+  :func:`QPlainTextEdit.setTabStopDistance` :func:`QTextPlainEdit.setTabStopDistance`
+  are made available if not present Qt5 (<5.10). Use these instead of the obsolete
+  `setTabStopWidth` ...
+
 :mod:`AnyQt.QtMultimedia`
 -------------------------
 

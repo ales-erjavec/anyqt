@@ -425,6 +425,23 @@ if hasattr(QApplication, "desktop"):
     QApplication.desktop = staticmethod(QApplication_desktop)
     del QApplication_desktop
 
+if not hasattr(QPlainTextEdit, "setTabStopDistance"):
+    def __QPlainTextEdit_setTabStopDistance(self, width: float):
+        self.setTabStopWidth(int(width))
+    def __QPlainTextEdit_tabStopDistance(self) -> float:
+        return float(self.tabStopWidth())
+    QPlainTextEdit.setTabStopDistance = __QPlainTextEdit_setTabStopDistance
+    QPlainTextEdit.tabStopDistance = __QPlainTextEdit_tabStopDistance
+
+
+if not hasattr(QTextEdit, "setTabStopDistance"):
+    def __QTextEdit_setTabStopDistance(self, width: float):
+        self.setTabStopWidth(int(width))
+    def __QTextEdit_tabStopDistance(self) -> float:
+        return float(self.tabStopWidth())
+    QTextEdit.setTabStopDistance = __QTextEdit_setTabStopDistance
+    QTextEdit.tabStopDistance = __QTextEdit_tabStopDistance
+
 
 from AnyQt.QtCore import Signal, Slot
 
