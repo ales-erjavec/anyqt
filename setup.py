@@ -5,13 +5,13 @@ import io
 from setuptools import setup, find_packages
 
 NAME = "AnyQt"
-VERSION = "0.0.14"
+VERSION = "0.1.0rc1"
 AUTHOR = "Aleš Erjavec"
 AUTHOR_EMAIL = "ales.erjavec@fri.uni-lj.si"
 URL = "https://github.com/ales-erjavec/anyqt"
 PACKAGES = find_packages(".", include="AnyQt*")
 
-DESCRIPTION = "PyQt4/PyQt5 compatibility layer."
+DESCRIPTION = "PyQt5/PyQt6 compatibility layer."
 
 with io.open("README.txt", encoding="utf-8") as f:
     README = f.read()
@@ -51,4 +51,5 @@ if __name__ == "__main__":
         classifiers=CLASSIFIERS,
         packages=PACKAGES,
         project_urls=PROJECT_URLS,
+        python_requires=">=3.6",
     )
