@@ -101,12 +101,12 @@ if USED_API is None:
             __available = QT_API_PYQT5
         elif "PyQt4" in available:
             __available = QT_API_PYQT4
-        elif "PySide" in available:
-            __available = QT_API_PYSIDE
-        elif "PySide2" in available:
-            __available = QT_API_PYSIDE2
         elif "PySide6" in available:
             __available = QT_API_PYSIDE6
+        elif "PySide2" in available:
+            __available = QT_API_PYSIDE2
+        elif "PySide" in available:
+            __available = QT_API_PYSIDE
         if __available is not None:
             comittoapi(__available)
         del __available
@@ -114,7 +114,7 @@ if USED_API is None:
     del __existing
 
 if USED_API is None:
-    raise ImportError("PyQt6", "PyQt5", "PyQt4, PySide or PySide2 are not available for import")
+    raise ImportError("PyQt6", "PyQt5", "PyQt4, PySide6 or PySide2 are not available for import")
 
 
 if "ANYQT_HOOK_DENY" in os.environ:

@@ -32,5 +32,9 @@ elif _api.USED_API == _api.QT_API_PYSIDE:
         QWebPage,
         QWebView,
     )
+elif _api.USED_API == _api.QT_API_PYSIDE2:
+    from PySide2.QtWebKitWidgets import *
+elif _api.USED_API == _api.QT_API_PYSIDE6:
+    from PySide6.QtWebKitWidgets import *
 
 _api.apply_global_fixes(globals())

@@ -55,3 +55,5 @@ elif _api.USED_API == _api.QT_API_PYSIDE:
         pass
 elif _api.USED_API == _api.QT_API_PYSIDE2:
     from PySide2.QtWebKit import *
+elif _api.USED_API == _api.QT_API_PYSIDE6:
+    from PySide6.QtWebKit import *

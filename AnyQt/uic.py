@@ -10,3 +10,6 @@ elif _api.USED_API == _api.QT_API_PYSIDE:
 elif _api.USED_API == _api.QT_API_PYSIDE2:
     # This will fail with an ImportError (as it should)
     from PySide2.uic import *
+elif _api.USED_API == _api.QT_API_PYSIDE6:
+    # This will fail with an ImportError (as it should)
+    from PySide6.uic import *

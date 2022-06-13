@@ -288,6 +288,9 @@ GLOBAL_FIXES = {
         fix_pyside_exec,
         fix_qstandarditem_insert_row,
     ],
+    "pyside6": [
+        fix_qstandarditem_insert_row
+    ]
 }
 
 

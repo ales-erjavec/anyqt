@@ -340,6 +340,13 @@ elif _api.USED_API == _api.QT_API_PYSIDE2:
     QT_VERSION = (_major << 16) + (_minor << 8) + _micro
     QT_VERSION_STR = "{}.{}.{}".format(_major, _minor, _micro)
     BoundSignal = Signal
+elif _api.USED_API == _api.QT_API_PYSIDE6:
+    from PySide6.QtCore import *
+    _major, _minor, _micro = tuple(map(int, qVersion().split(".")[:3]))
+    QT_VERSION = (_major << 16) + (_minor << 8) + _micro
+    QT_VERSION_STR = "{}.{}.{}".format(_major, _minor, _micro)
+    BoundSignal = Signal
+    PYQT_VERSION = 0x60000
 
 # Missing in PyQt4 <= 4.11.3
 if not hasattr(QEvent, "MacSizeChange"):
@@ -423,28 +430,31 @@ pyqtSignal = Signal
 pyqtSlot = Slot
 pyqtProperty = Property
 
-if _api.USED_API == _api.QT_API_PYSIDE2:
-    try:
-        from PySide2 import shiboken2 as __shiboken2
-    except ImportError:
-        import shiboken2 as __shiboken2
+if _api.USED_API in (_api.QT_API_PYSIDE2, _api.QT_API_PYSIDE6):
+    if _api.USED_API == _api.QT_API_PYSIDE2:
+        try:
+            from PySide2 import shiboken2 as __shiboken
+        except ImportError:
+            import shiboken2 as __shiboken
+    else:
+       import shiboken6 as __shiboken
 
     def cast(obj, type_):
         addr = unwrapinstance(obj)
         return wrapinstance(addr, type_)
 
     def unwrapinstance(obj):
-        addr, = __shiboken2.getCppPointer(obj)
+        addr, = __shiboken.getCppPointer(obj)
         return addr
 
-    wrapinstance = __shiboken2.wrapInstance
+    wrapinstance = __shiboken.wrapInstance
 
     def isdeleted(obj):
-        return not __shiboken2.isValid(obj)
+        return not __shiboken.isValid(obj)
 
-    ispyowned = __shiboken2.ownedByPython
-    delete = __shiboken2.delete
-    ispycreated = __shiboken2.createdByPython
+    ispyowned = __shiboken.ownedByPython
+    delete = __shiboken.delete
+    ispycreated = __shiboken.createdByPython
 elif _api.USED_API in (_api.QT_API_PYQT5, _api.QT_API_PYQT6):
     from AnyQt.sip import (
         cast, isdeleted, ispyowned, ispycreated, delete, unwrapinstance,
