@@ -268,6 +268,9 @@ elif _api.USED_API == _api.QT_API_PYSIDE2:
     from PySide2.QtGui import *
     from PySide2.QtWidgets import QUndoCommand, QUndoStack, QUndoGroup
     from PySide2.QtWidgets import QShortcut, QAction, QActionGroup
+elif _api.USED_API == _api.QT_API_PYSIDE6:
+    from PySide6.QtGui import *
+
 
 if _api.USED_API in [_api.QT_API_PYQT4, _api.QT_API_PYSIDE]:
     from AnyQt import QtCore as __QtCore
@@ -296,8 +299,11 @@ if _api.USED_API in [_api.QT_API_PYQT4, _api.QT_API_PYSIDE]:
     QWheelEvent.angleDelta = __QWheelEvent_angleDelta
     QWheelEvent.pixelDelta = __QWheelEvent_pixelDelta
 
-if _api.USED_API == _api.QT_API_PYSIDE2:
-    from PySide2.QtCore import QRectF as __QRectF
+if _api.USED_API in (_api.QT_API_PYSIDE2, _api.QT_API_PYSIDE6):
+    if _api.USED_API == _api.QT_API_PYSIDE2:
+        from PySide2.QtCore import QRectF as __QRectF
+    else:
+        from PySide6.QtCore import QRectF as __QRectF
     _QPainter_drawPixmapFragments_orig = QPainter.drawPixmapFragments
     class __ArgsTypeError(TypeError): pass
 

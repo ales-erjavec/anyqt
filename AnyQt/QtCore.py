@@ -340,6 +340,13 @@ elif _api.USED_API == _api.QT_API_PYSIDE2:
     QT_VERSION = (_major << 16) + (_minor << 8) + _micro
     QT_VERSION_STR = "{}.{}.{}".format(_major, _minor, _micro)
     BoundSignal = Signal
+elif _api.USED_API == _api.QT_API_PYSIDE6:
+    from PySide6.QtCore import *
+    _major, _minor, _micro = tuple(map(int, qVersion().split(".")[:3]))
+    QT_VERSION = (_major << 16) + (_minor << 8) + _micro
+    QT_VERSION_STR = "{}.{}.{}".format(_major, _minor, _micro)
+    BoundSignal = Signal
+    PYQT_VERSION = 0x60000
 
 # Missing in PyQt4 <= 4.11.3
 if not hasattr(QEvent, "MacSizeChange"):
@@ -423,11 +430,14 @@ pyqtSignal = Signal
 pyqtSlot = Slot
 pyqtProperty = Property
 
-if _api.USED_API == _api.QT_API_PYSIDE2:
-    try:
-        from PySide2 import shiboken2 as __shiboken2
-    except ImportError:
-        import shiboken2 as __shiboken2
+if _api.USED_API in (_api.QT_API_PYSIDE2, _api.QT_API_PYSIDE6):
+    if _api.USED_API == _api.QT_API_PYSIDE2:
+        try:
+            from PySide2 import shiboken2 as __shiboken2
+        except ImportError:
+            import shiboken2 as __shiboken2
+    else:
+       import shiboken6 as __shiboken2
 
     def cast(obj, type_):
         addr = unwrapinstance(obj)

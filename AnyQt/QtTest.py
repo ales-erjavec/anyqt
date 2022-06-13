@@ -10,6 +10,8 @@ elif _api.USED_API == _api.QT_API_PYSIDE:
     from PySide.QtTest import *
 elif _api.USED_API == _api.QT_API_PYSIDE2:
     from PySide2.QtTest import *
+elif _api.USED_API == _api.QT_API_PYSIDE6:
+    from PySide6.QtTest import *
 
 
 def _QTest_qSleep(ms: int):
@@ -84,7 +86,8 @@ if not hasattr(QTest, "qWaitForWindowActive"):
     QTest.qWaitForWindowActive = _QTest_qWaitForWindowActive
 
 
-if _api.USED_API in {_api.QT_API_PYQT4, _api.QT_API_PYSIDE, _api.QT_API_PYSIDE2}:
+if _api.USED_API in {_api.QT_API_PYQT4, _api.QT_API_PYSIDE,
+                     _api.QT_API_PYSIDE2, _api.QT_API_PYSIDE6}:
     from AnyQt.QtCore import QObject, QByteArray as _QByteArray
 
     # not exposed in PyQt4 or PySide. Going by PyQt5 interface
@@ -124,7 +127,7 @@ if _api.USED_API in {_api.QT_API_PYQT4, _api.QT_API_PYSIDE, _api.QT_API_PYSIDE2}
             self.__timer.stop()
             self.__timer.setInterval(timeout)
             self.__timer.start()
-            self.__loop.exec_()
+            self.__loop.exec()
             self.__timer.stop()
             return len(self) != count
 

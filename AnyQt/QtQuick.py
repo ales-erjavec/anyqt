@@ -6,8 +6,10 @@ elif _api.USED_API == _api.QT_API_PYQT5:
     from PyQt5.QtQuick import *
 elif _api.USED_API == _api.QT_API_PYSIDE2:
     from PySide2.QtQuick import *
+elif _api.USED_API == _api.QT_API_PYSIDE6:
+    from PySide6.QtQuick import *
 else:
-    raise ImportError("No module named 'QtQuick' in the selected "
-                      "Qt api ({})".format(_api.USED_API))
+    raise ImportError(f"No module named '{__name__}' in the selected "
+                      f"Qt api ({_api.USED_API})")
 
 _api.apply_global_fixes(globals())

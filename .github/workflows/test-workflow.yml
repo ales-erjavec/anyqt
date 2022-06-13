@@ -64,6 +64,12 @@ jobs:
             qt-api: "PyQt6"
             extra-system-packages: "glibc-tools"
 
+          - os: ubuntu-22.04
+            python-version: "3.12"
+            test-env: "PySide6~=6.6.0"
+            qt-api: "PySide6"
+            extra-system-packages: "glibc-tools"
+
           # macOS
           - os: macos-11
             python-version: 3.7
@@ -101,6 +107,10 @@ jobs:
             python-version: "3.12"
             test-env: "PyQt6~=6.6.0 PyQt6-Qt6~=6.6.0"
 
+          - os: macos-11
+            python-version: "3.12"
+            test-env: "PySide6~=6.6.0"
+
           # Windows
           - os: windows-2019
             python-version: 3.7
@@ -137,6 +147,10 @@ jobs:
           - os: windows-2019
             python-version: "3.12"
             test-env: "PyQt6~=6.6.0 PyQt6-Qt6~=6.6.0"
+
+          - os: windows-2019
+            python-version: "3.12"
+            test-env: "PySide6~=6.6.0"
 
     steps:
       - uses: actions/checkout@v4

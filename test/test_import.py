@@ -6,7 +6,8 @@ apis = {
     'pyqt5': 'PyQt5',
     'pyside': 'PySide',
     'pyside2': 'PySide2',
-    'pyqt6:': "PyQt6"
+    'pyqt6:': "PyQt6",
+    'pyside6': 'PySide6',
 }
 
 submodules_common = [
@@ -40,6 +41,7 @@ submodules_qt5 = [
     'QtWebEngineCore',
     'QtWebSockets',
     'QtQml',
+    'QtQuick',
     'QtXmlPatterns',
     "QtLocation",
 ]
