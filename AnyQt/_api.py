@@ -105,6 +105,8 @@ if USED_API is None:
             __available = QT_API_PYSIDE2
         elif "PyQt6" in available:
             __available = QT_API_PYQT6
+        elif "PySide6" in available:
+            __available = QT_API_PYSIDE6
 
         if __available is not None:
             comittoapi(__available)
