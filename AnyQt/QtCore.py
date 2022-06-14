@@ -423,6 +423,35 @@ pyqtSignal = Signal
 pyqtSlot = Slot
 pyqtProperty = Property
 
+if _api.USED_API == _api.QT_API_PYSIDE2:
+    try:
+        from PySide2 import shiboken2 as __shiboken2
+    except ImportError:
+        import shiboken2 as __shiboken2
+
+    def cast(obj, type_):
+        addr = unwrapinstance(obj)
+        return wrapinstance(addr, type_)
+
+    def unwrapinstance(obj):
+        addr, = __shiboken2.getCppPointer(obj)
+        return addr
+
+    wrapinstance = __shiboken2.wrapInstance
+
+    def isdeleted(obj):
+        return not __shiboken2.isValid(obj)
+
+    ispyowned = __shiboken2.ownedByPython
+    delete = __shiboken2.delete
+    ispycreated = __shiboken2.createdByPython
+elif _api.USED_API in (_api.QT_API_PYQT5, _api.QT_API_PYQT6):
+    from AnyQt.sip import (
+        cast, isdeleted, ispyowned, ispycreated, delete, unwrapinstance,
+        wrapinstance
+    )
+
+
 #: Qt version as a (major, minor, micro) tuple
 QT_VERSION_INFO = tuple(map(int, qVersion().split(".")[:3]))
 
