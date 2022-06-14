@@ -1,8 +1,9 @@
 import unittest
 
 from AnyQt.QtTest import QSignalSpy
-from AnyQt.QtWidgets import QMenu, QAction, QApplication
+from AnyQt.QtWidgets import QMenu, QApplication
 from AnyQt.QtGui import QAction
+from AnyQt.QtCore import delete
 
 
 class TestQAction_setMenu(unittest.TestCase):
@@ -27,6 +28,7 @@ class TestQAction_setMenu(unittest.TestCase):
         ac.setMenu(None)
         self.assertIs(ac.menu(), None)
         spy = QSignalSpy(menu.destroyed)
+        delete(menu)
         del menu
         self.assertEqual(len(spy), 1)
 
