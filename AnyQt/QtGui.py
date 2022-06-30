@@ -340,8 +340,8 @@ if _api.USED_API == _api.QT_API_PYSIDE2:
         painter.restore()
     QPainter.drawPixmapFragments = _QPainter_drawPixmapFragments
 
-if _api.USED_API == _api.QT_API_PYQT5:
-    # PyQt5 does not support setPageSize(QPageSize) overload
+if _api.USED_API in (_api.QT_API_PYQT5, _api.QT_API_PYSIDE2):
+    # PyQt5, PySide2 do not support setPageSize(QPageSize) overload
     def QPdfWriter_setPageSize(self, size):
         if isinstance(size, QPageSize):
             self.setPageSizeMM(size.size(QPageSize.Millimeter))
