@@ -261,6 +261,20 @@ def fix_pyside_exec(namespace):
             QPrintDialog.exec = lambda self: QPrintDialog.exec_(self)
 
 
+def fix_qstandarditem_insert_row(namespace):
+    if namespace.get("__name__") == "AnyQt.QtGui":
+        QStandardItem = namespace["QStandardItem"]
+        __QStandardItem_insertRow = QStandardItem.insertRow
+
+        def QStandardItem_insertRow(self, row, items):
+            if isinstance(items, QStandardItem):
+                # PYSIDE-237
+                __QStandardItem_insertRow(self, row, [items])
+            else:
+                __QStandardItem_insertRow(self, row, items)
+        QStandardItem.insertRow = QStandardItem_insertRow
+
+
 GLOBAL_FIXES = {
     "pyqt6": [
         fix_pyqt6_unscoped_enum,
@@ -272,7 +286,8 @@ GLOBAL_FIXES = {
     "pyside2": [
         fix_pyside_QActionEvent_action,
         fix_pyside_exec,
-    ]
+        fix_qstandarditem_insert_row,
+    ],
 }
 
 
