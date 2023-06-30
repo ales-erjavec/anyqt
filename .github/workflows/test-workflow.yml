@@ -48,6 +48,11 @@ jobs:
             qt-api: "PyQt6"
 
           - os: ubuntu-20.04
+            python-version: "3.11"
+            test-env: "PyQt6~=6.5.0 PyQt6-Qt6~=6.5.0"
+            qt-api: "PyQt6"
+
+          - os: ubuntu-20.04
             python-version: "3.10"
             test-env: "PySide2~=5.15.0"
             qt-api: "PySide2"
@@ -78,6 +83,10 @@ jobs:
             test-env: "PyQt6~=6.2.3 PyQt6-Qt6~=6.2.3"
 
           - os: macos-11
+            python-version: "3.11"
+            test-env: "PyQt6~=6.5.0 PyQt6-Qt6~=6.5.0"
+
+          - os: macos-11
             python-version: "3.10"
             test-env: "PySide2~=5.15.0"
 
@@ -105,6 +114,10 @@ jobs:
           - os: windows-2019
             python-version: "3.10"
             test-env: "PyQt6~=6.2.3 PyQt6-Qt6~=6.2.3"
+
+          - os: windows-2019
+            python-version: "3.11"
+            test-env: "PyQt6~=6.5.0 PyQt6-Qt6~=6.5.0"
 
           - os: windows-2019
             python-version: "3.10"
