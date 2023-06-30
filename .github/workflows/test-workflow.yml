@@ -17,11 +17,6 @@ jobs:
       matrix:
         include:
           # Linux
-          - os: ubuntu-20.04
-            python-version: 3.6
-            test-env: "PyQt5~=5.9.2"
-            qt-api: "PyQt5"
-
           - os: ubuntu-18.04
             python-version: 3.7
             test-env: "PyQt5~=5.12.0"
@@ -48,15 +43,26 @@ jobs:
             qt-api: "PyQt6"
 
           - os: ubuntu-20.04
+            python-version: "3.11"
+            test-env: "PyQt6~=6.5.0 PyQt6-Qt6~=6.5.0"
+            qt-api: "PyQt6"
+
+          - os: ubuntu-20.04
             python-version: "3.10"
             test-env: "PySide2~=5.15.0"
             qt-api: "PySide2"
 
-          # macOS
-          - os: macos-10.15
-            python-version: 3.6
-            test-env: "PyQt5~=5.9.2"
+          - os: ubuntu-20.04
+            python-version: "3.11"
+            test-env: "PyQt6~=6.5.0 PyQt6-Qt6~=6.5.0"
+            qt-api: "PyQt6"
 
+          - os: ubuntu-20.04
+            python-version: "3.12"
+            test-env: "PyQt6~=6.6.0 PyQt6-Qt6~=6.6.0"
+            qt-api: "PyQt6"
+
+          # macOS
           - os: macos-10.15
             python-version: 3.7
             test-env: "PyQt5~=5.12.0"
@@ -78,15 +84,23 @@ jobs:
             test-env: "PyQt6~=6.2.3 PyQt6-Qt6~=6.2.3"
 
           - os: macos-11
+            python-version: "3.11"
+            test-env: "PyQt6~=6.5.0 PyQt6-Qt6~=6.5.0"
+
+          - os: macos-11
             python-version: "3.10"
             test-env: "PySide2~=5.15.0"
+
+          - os: macos-11
+            python-version: "3.11"
+            test-env: "PyQt6~=6.5.0 PyQt6-Qt6~=6.5.0"
+
+          - os: macos-11
+            python-version: "3.12"
+            test-env: "PyQt6~=6.6.0 PyQt6-Qt6~=6.6.0"
 
           # Windows
           - os: windows-2019
-            python-version: 3.6
-            test-env: "PyQt5~=5.9.2"
-
-          - os: windows-2019
             python-version: 3.7
             test-env: "PyQt5~=5.12.0"
 
@@ -107,8 +121,20 @@ jobs:
             test-env: "PyQt6~=6.2.3 PyQt6-Qt6~=6.2.3"
 
           - os: windows-2019
+            python-version: "3.11"
+            test-env: "PyQt6~=6.5.0 PyQt6-Qt6~=6.5.0"
+
+          - os: windows-2019
             python-version: "3.10"
             test-env: "PySide2~=5.15.0"
+
+          - os: windows-2019
+            python-version: "3.11"
+            test-env: "PyQt6~=6.5.0 PyQt6-Qt6~=6.5.0"
+
+          - os: windows-2019
+            python-version: "3.12"
+            test-env: "PyQt6~=6.6.0 PyQt6-Qt6~=6.6.0"
 
     steps:
       - uses: actions/checkout@v2
