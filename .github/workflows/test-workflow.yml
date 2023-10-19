@@ -139,9 +139,9 @@ jobs:
             test-env: "PyQt6~=6.6.0 PyQt6-Qt6~=6.6.0"
 
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
       - name: Setup Python
-        uses: actions/setup-python@v2
+        uses: actions/setup-python@v5
         with:
           python-version: ${{ matrix.python-version }}
 
@@ -153,7 +153,7 @@ jobs:
         run: sudo apt-get install -y libxkbcommon-x11-0 libxcb-icccm4 libxcb-image0 libxcb-keysyms1 libxcb-randr0 libxcb-render-util0 libxcb-xinerama0 libxcb-xfixes0 libegl1-mesa libxcb-shape0 libxcb-cursor0 $PACKAGES
 
       - name: Setup Pip Cache
-        uses: actions/cache@v2
+        uses: actions/cache@v4
         with:
           path: .pip-cache
           key: ${{ runner.os }}-py-${{ matrix.python-version }}-pip-${{ hashFiles('setup.*', '.github/workflows/test-workflow.yml') }}
@@ -163,7 +163,7 @@ jobs:
       - name: Install Test Deps
         env:
           TEST_ENV: ${{ matrix.test-env }}
-          TEST_DEPS: pytest pytest-cov codecov wheel
+          TEST_DEPS: pytest pytest-cov wheel
         run: python -m pip install $TEST_DEPS $TEST_ENV
         shell: bash
 
@@ -189,4 +189,6 @@ jobs:
           ANYQT_HOOK_BACKPORT=PyQt4 python -c "import AnyQt.QtCore, PyQt4"
 
       - name: Upload Coverage
-        run: codecov
+        uses: codecov/codecov-action@v4
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
