@@ -17,7 +17,7 @@ jobs:
       matrix:
         include:
           # Linux
-          - os: ubuntu-18.04
+          - os: ubuntu-20.04
             python-version: 3.7
             test-env: "PyQt5~=5.12.0"
             qt-api: "PyQt5"
@@ -52,26 +52,28 @@ jobs:
             test-env: "PySide2~=5.15.0"
             qt-api: "PySide2"
 
-          - os: ubuntu-20.04
+          - os: ubuntu-22.04
             python-version: "3.11"
             test-env: "PyQt6~=6.5.0 PyQt6-Qt6~=6.5.0"
             qt-api: "PyQt6"
+            extra-system-packages: "glibc-tools"
 
-          - os: ubuntu-20.04
+          - os: ubuntu-22.04
             python-version: "3.12"
             test-env: "PyQt6~=6.6.0 PyQt6-Qt6~=6.6.0"
             qt-api: "PyQt6"
+            extra-system-packages: "glibc-tools"
 
           # macOS
-          - os: macos-10.15
+          - os: macos-11
             python-version: 3.7
             test-env: "PyQt5~=5.12.0"
 
-          - os: macos-10.15
+          - os: macos-11
             python-version: 3.8
             test-env: "PyQt5~=5.14.0"
 
-          - os: macos-10.15
+          - os: macos-11
             python-version: 3.9
             test-env: "PyQt5~=5.15.0"
 
@@ -145,8 +147,10 @@ jobs:
 
       - name: Install System Deps
         if: ${{ startsWith(runner.os, 'Linux') }}
+        env:
+          PACKAGES: ${{ matrix.extra-system-packages }}
         # https://www.riverbankcomputing.com/pipermail/pyqt/2020-June/042949.html
-        run: sudo apt-get install -y libxkbcommon-x11-0 libxcb-icccm4 libxcb-image0 libxcb-keysyms1 libxcb-randr0 libxcb-render-util0 libxcb-xinerama0 libxcb-xfixes0 libegl1-mesa libxcb-shape0
+        run: sudo apt-get install -y libxkbcommon-x11-0 libxcb-icccm4 libxcb-image0 libxcb-keysyms1 libxcb-randr0 libxcb-render-util0 libxcb-xinerama0 libxcb-xfixes0 libegl1-mesa libxcb-shape0 libxcb-cursor0 $PACKAGES
 
       - name: Setup Pip Cache
         uses: actions/cache@v2
