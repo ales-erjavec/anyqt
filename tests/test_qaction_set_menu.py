@@ -1,9 +1,9 @@
 import unittest
 
-from AnyQt.QtTest import QSignalSpy
+from weakref import ref
+
 from AnyQt.QtWidgets import QMenu, QApplication
 from AnyQt.QtGui import QAction
-from AnyQt.QtCore import delete
 
 
 class TestQAction_setMenu(unittest.TestCase):
@@ -23,12 +23,11 @@ class TestQAction_setMenu(unittest.TestCase):
     def test(self):
         ac = QAction()
         menu = QMenu()
+        wref = ref(menu)
         ac.setMenu(menu)
         self.assertIs(ac.menu(), menu)
         ac.setMenu(None)
         self.assertIs(ac.menu(), None)
-        spy = QSignalSpy(menu.destroyed)
-        delete(menu)
+        menu.setParent(None)  # parent is None but without this PySide2 fails??
         del menu
-        self.assertEqual(len(spy), 1)
-
+        self.assertIsNone(wref())
