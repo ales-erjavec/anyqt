@@ -27,6 +27,12 @@ submodules_common = [
 submodules_qt4 = [
     'QtXmlPatterns'
 ]
+
+submodules_common_qt56 = [
+    "QtPositioning",
+    "QtRemoteObjects",
+]
+
 submodules_qt5 = [
     'QtMultimediaWidgets',
     'QtWebChannel',
@@ -35,10 +41,12 @@ submodules_qt5 = [
     'QtWebSockets',
     'QtQml',
     'QtXmlPatterns',
+    "QtLocation",
 ]
 
 submodules_qt6 = [
     "QtSvgWidgets",
+    "QtPdfWidgets",
 ]
 
 
@@ -68,9 +76,9 @@ for api in apis:
         if qt_version[0] == '4':
             submodules.extend(submodules_qt4)
         if qt_version[0] == '5':
-            submodules.extend(submodules_qt5)
+            submodules.extend(submodules_qt5 + submodules_common_qt56)
         if qt_version[0] == '6':
-            submodules.extend(submodules_qt6)
+            submodules.extend(submodules_qt6 + submodules_common_qt56)
         for submodule in submodules:
             if try_import_anyqt(modname, submodule):
                 print(submodule, 'Ok')
