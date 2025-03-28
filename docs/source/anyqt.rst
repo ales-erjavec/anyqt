@@ -211,6 +211,8 @@ Export a Qt5 compatible QtGui module.
 * :class:`QAction` has ctypes based :func:`menu()` and  :func:`setMenu()`
   members if/when not present in PyQt6
 
+* :class:`QFileSystemModel` is exported here when using PyQt5
+
 
 :mod:`AnyQt.QtWidgets`
 ----------------------

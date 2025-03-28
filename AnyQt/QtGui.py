@@ -209,6 +209,7 @@ elif _api.USED_API == _api.QT_API_PYQT5:
     from PyQt5.QtGui import *
     from PyQt5.QtWidgets import QUndoCommand, QUndoStack, QUndoGroup
     from PyQt5.QtWidgets import QShortcut, QAction, QActionGroup
+    from PyQt5.QtWidgets import QFileSystemModel
     from PyQt5.QtCore import PYQT_VERSION as _PYQT_VERSION
 
     if _PYQT_VERSION < 0x50c00:  # 5.12.0
@@ -268,6 +269,7 @@ elif _api.USED_API == _api.QT_API_PYSIDE2:
     from PySide2.QtGui import *
     from PySide2.QtWidgets import QUndoCommand, QUndoStack, QUndoGroup
     from PySide2.QtWidgets import QShortcut, QAction, QActionGroup
+    from PySide2.QtWidgets import QFileSystemModel
 
 if _api.USED_API in [_api.QT_API_PYQT4, _api.QT_API_PYSIDE]:
     from AnyQt import QtCore as __QtCore
