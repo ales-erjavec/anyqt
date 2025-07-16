@@ -113,7 +113,7 @@ if USED_API is None:
     del __existing
 
 if USED_API is None:
-    raise ImportError("PyQt4, PyQt5, PySide or PySide2 are not available for import")
+    raise ImportError("PyQt4, PyQt5, PyQt6, PySide or PySide2 are not available for import")
 
 
 if "ANYQT_HOOK_DENY" in os.environ:
