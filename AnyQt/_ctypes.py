@@ -1,39 +1,11 @@
 import os
 from itertools import chain
 from typing import Iterable
-
 import glob
 import sys
-import sysconfig
-import ctypes.util
+import ctypes
 
 from AnyQt.QtCore import QLibraryInfo, QT_VERSION
-
-
-def shlib_ext():
-    """
-    Return possible platform shared library extension.
-    """
-    extensions = []
-    if sys.platform == "win32":
-        extensions += [".dll"]
-    elif sys.platform == "darwin":
-        extensions += ["", ".dylib"]
-    else:
-        extensions += [".so"]
-
-    confv = sysconfig.get_config_vars()
-    so_ext = confv.get("SO", None)
-    if so_ext is not None and so_ext not in extensions:
-        extensions += [so_ext]
-    return extensions
-
-#
-# NOTE: posix dlsym resolves references over linked libs
-# `LoadLibrary(QtGui.__file__)` is sufficient. Windows?
-# No. Only referenced lib is searched (LoadLibrary and GetProcAddress).
-# But LoadLibrary("Qt5Gui.dll") might just do the trick.
-#
 
 
 def find_library(name, path) -> Iterable[str]:
@@ -45,6 +17,7 @@ def find_library(name, path) -> Iterable[str]:
             "{name}.framework/{name}".format(name=name),
             "{name}.framework/Versions/Current/{name}".format(name=name),
             "{name}.framework/Versions/*/{name}".format(name=name),
+            "lib{name}.dylib".format(name=name),
         ]
 
     elif sys.platform == "win32":
@@ -59,10 +32,6 @@ def find_library(name, path) -> Iterable[str]:
 
     for suffix in test:
         yield from glob.iglob(os.path.join(path, suffix))
-        # try:
-        #     return next(glob.iglob(os.path.join(path, suffix)))
-        # except StopIteration:
-        #     pass
 
 
 def find_qtlib(name) -> Iterable[str]:
