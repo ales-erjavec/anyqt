@@ -19,9 +19,7 @@ with io.open("README.txt", encoding="utf-8") as f:
 LICENSE = "GPLv3"
 
 CLASSIFIERS = [
-    "Development Status :: 1 - Planning",
     "Intended Audience :: Developers",
-    "License :: OSI Approved :: GNU General Public License v3 (GPLv3)",
     "Operating System :: OS Independent",
     "Programming Language :: Python :: 2",
     "Programming Language :: Python :: 3",
@@ -46,6 +44,7 @@ if __name__ == "__main__":
         url=URL,
         description=DESCRIPTION,
         long_description=README,
+        long_description_content_type="text/plain",
         license=LICENSE,
         keywords=KEYWORDS,
         classifiers=CLASSIFIERS,
