@@ -151,7 +151,7 @@ jobs:
             test-env: "PyQt6~=6.11.0 PyQt6-Qt6~=6.11.0"
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
       - name: Setup Python
         uses: actions/setup-python@v7
         with:
@@ -196,6 +196,6 @@ jobs:
           ANYQT_HOOK_BACKPORT=PyQt4 python -c "import AnyQt.QtCore, PyQt4"
 
       - name: Upload Coverage
-        uses: codecov/codecov-action@v4
+        uses: codecov/codecov-action@v6
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
