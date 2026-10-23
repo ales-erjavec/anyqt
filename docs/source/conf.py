@@ -51,8 +51,9 @@ master_doc = 'index'
 
 # General information about the project.
 project = u'AnyQt'
-copyright = u'2016, Aleš Erjavec'
 author = u'Aleš Erjavec'
+copyright = u'2026, {}'.format(author)
+
 
 # The version info for the project you're documenting, acts as replacement for
 # |version| and |release|, also used in various other places throughout the
